@@ -1,0 +1,98 @@
+﻿.card {
+    background-color: #FA8072;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    /*width: 670px;*/
+    /*height: 348px;*/
+}
+
+.card label {
+    font-size: 8pt;
+}
+
+.card .textbox {
+    display: block;
+}
+
+.card .in-line-block {
+    display: inline-block;
+}
+
+.thirds {
+    width: 30%;
+}
+
+.halves {
+    width: 49%;
+}
+
+
+
+.box {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 2px;
+    display: inline-block;
+}
+
+.comment-box {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 2px;
+    width: 661px;
+    height: 115px;
+}
+
+.box-left {
+    float: left;
+    border-right: 1px solid black;
+    width: 49%;
+}
+
+.box-right {
+    float: right;
+    border-left: 1px solid black;
+    width: 49%;
+}
+
+.line {
+    border-bottom: 2px solid black;
+    padding: 5px
+}
+
+.bottom-line {
+    padding: 5px;
+}
+
+.line-left{
+    float: left;  
+}
+
+.line-right{
+    float: right;
+}
+
+
+.radio {
+    display: inline-block
+}
+
+.centered {
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.right-just {
+    float: right;
+    display: inline-block;
+}
+
+#tbSubmittedBy {
+    display: inline;
+}
+
+#btnSign {
+    display: inline;
+}
