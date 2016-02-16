@@ -29,45 +29,42 @@
             });
         };
 
-        <%--function hoursCalc () {
-            var startTime = document.getElementById('<%= tbBeginningTime.ClientID %>');
-            var endTime = document.getElementById('<%= tbEndingTime.ClientID %>');
-            var totalTime = document.getElementById('<%= tbTotalTime.ClientID %>');
-            var t1 = 0;
-            var t2 = 0;
+        $(function () {
+            $('#tbBeginningTime, #tbEndingTime').blur(function () {
+                var beginTime = $('#tbBeginningTime').val();
+                var endTime = $('#tbEndingTime').val();
+                var strBeginTime = beginTime.toString();
+                var strEndTime = endTime.toString();
 
-            if (startTime.value != "") t1 = startTime.value;
-            if (endTime.value != "") t2 = endTime.value;
+                var totalTime = $('#tbTotalTime');
+                var timeArray = [];
 
-            if (endTime.value < startTime.value) t2 = parseInt(endTime.value) + 2400;
+                for (var i = 0; i < strBeginTime.length; i += 2) {
+                    var strGroup = strBeginTime.charAt(i) + strBeginTime.charAt(i + 1);
+                    timeArray.push(strGroup);
+                };
 
-            totalTime.value = parseInt((parseInt(t2) - parseInt(t1)) / 100);
-        }--%>
+                for (var i = 0; i < strEndTime.length; i += 2) {
+                    var strGroup = strEndTime.charAt(i) + strEndTime.charAt(i + 1);
+                    timeArray.push(strGroup);
+                };
 
-        function hoursCalc() {
-            var number = document.getElementById('<%= tbBeginningTime.ClientID %>');
+                var beginTimeHours = parseInt(timeArray[0]);
+                var beginTimeMinutes = parseInt(timeArray[1]) / 60;
+                var endTimeHours = parseInt(timeArray[2]);
+                var endTimeMinutes = parseInt(timeArray[3]) / 60;
 
-            var startTime = document.getElementById('<%= tbBeginningTime.ClientID %>');
-            var startTimeHour = 0;
-            var startTimeMin = 0;
-            var startTimeNew = 0;
-            var endTime = document.getElementById('<%= tbEndingTime.ClientID %>');
-            var endTimeHour = 0;
-            var endTimeMin = 0;
-            var endTimeNew = 0;
-            var totalTime = document.getElementById('<%= tbTotalTime.ClientID %>');
+                var totalTimeHours = endTimeHours - beginTimeHours;
+                var totalTimeMinutes = endTimeMinutes - beginTimeMinutes;
+                var calculatedTime = totalTimeHours + totalTimeMinutes;
 
-            output = [];
-            sNumber = number.toString();
+                if (parseInt(calculatedTime) < 0) {
+                    calculatedTime = calculatedTime + 24;
+                };
 
-            for (var i = 0, len = sNumber.length; i < len; i += 1) {
-                output.push(+sNumber.charAt(i));
-
-                console.log(output);
-            }
-
-            
-        }
+                totalTime.val(calculatedTime.toString());
+            });
+        });
 
     </script>
 </head>
@@ -302,11 +299,11 @@
                                 </div>
                                 <div class="line">
                                     <label for="tbBeginningTime">beginning time</label>
-                                    <asp:TextBox runat="server" ID="tbBeginningTime" type="number" AllowNegatives="false" onblur="javascript:hoursCalc();"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbBeginningTime" type="number" AllowNegatives="false"></asp:TextBox>
                                 </div>
                                 <div class="line">
                                     <label for="tbEndingTime">ending time</label>
-                                    <asp:TextBox runat="server" ID="tbEndingTime" type="number" AllowNegatives="false" onblur="javascript:hoursCalc();"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbEndingTime" type="number" AllowNegatives="false"></asp:TextBox>
                                 </div>
                                 <div class="line">
                                     <label for="tbTotalTime">total time</label>

@@ -32,6 +32,41 @@
                 $(".ui-dialog-titlebar").hide();
             });
         };
+
+        $('#beginningTime, #endingTime').blur(function () {
+            var beginTime = $('#beginningTime').val();
+            var endTime = $('#endingTime').val();
+            var strBeginTime = beginTime.toString();
+            var strEndTime = endTime.toString();
+
+            var totalTime = $('#totalTime');
+            var timeArray = [];
+
+            for (var i = 0; i < strBeginTime.length; i += 2) {
+                var strGroup = strBeginTime.charAt(i) + strBeginTime.charAt(i + 1);
+                timeArray.push(strGroup);
+            };
+
+            for (var i = 0; i < strEndTime.length; i += 2) {
+                var strGroup = strEndTime.charAt(i) + strEndTime.charAt(i + 1);
+                timeArray.push(strGroup);
+            };
+
+            var beginTimeHours = parseInt(timeArray[0]);
+            var beginTimeMinutes = parseInt(timeArray[1]) / 60;
+            var endTimeHours = parseInt(timeArray[2]);
+            var endTimeMinutes = parseInt(timeArray[3]) / 60;
+
+            var totalTimeHours = endTimeHours - beginTimeHours;
+            var totalTimeMinutes = endTimeMinutes - beginTimeMinutes;
+            var calculatedTime = totalTimeHours + totalTimeMinutes;
+
+            if (parseInt(calculatedTime) < 0) {
+                calculatedTime = calculatedTime + 24;
+            };
+
+            totalTime.val(calculatedTime.toString());
+        });
     </script>
 </head>
 <body>

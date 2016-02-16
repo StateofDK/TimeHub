@@ -4,19 +4,15 @@
 
 <html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>Equal Pay Compensation Request</title>
-    <meta name="generator" content="Bootply" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="content/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
     <link href="stylesheets/styles.css" rel="stylesheet">
-    <%--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/scripts.js"></script>--%>
+    <%--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>--%>
+    <%--<script src="js/bootstrap.min.js"></script>--%>
+    <%--<script src="js/scripts.js"></script>--%>
+    <script src="scripts/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/start/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         function ShowPopup(message) {
             $(function () {
@@ -33,6 +29,43 @@
                $(".ui-dialog-titlebar").hide();
             });
         };
+
+        $(function () {
+            $('#tbBeginningTime, #tbEndingTime').blur(function () {
+                var beginTime = $('#tbBeginningTime').val();
+                var endTime = $('#tbEndingTime').val();
+                var strBeginTime = beginTime.toString();
+                var strEndTime = endTime.toString();
+
+                var totalTime = $('#tbTotalTime');
+                var timeArray = [];
+
+                for (var i = 0; i < strBeginTime.length; i += 2) {
+                    var strGroup = strBeginTime.charAt(i) + strBeginTime.charAt(i + 1);
+                    timeArray.push(strGroup);
+                };
+
+                for (var i = 0; i < strEndTime.length; i += 2) {
+                    var strGroup = strEndTime.charAt(i) + strEndTime.charAt(i + 1);
+                    timeArray.push(strGroup);
+                };
+
+                var beginTimeHours = parseInt(timeArray[0]);
+                var beginTimeMinutes = parseInt(timeArray[1]) / 60;
+                var endTimeHours = parseInt(timeArray[2]);
+                var endTimeMinutes = parseInt(timeArray[3]) / 60;
+
+                var totalTimeHours = endTimeHours - beginTimeHours;
+                var totalTimeMinutes = endTimeMinutes - beginTimeMinutes;
+                var calculatedTime = totalTimeHours + totalTimeMinutes;
+
+                if (parseInt(calculatedTime) < 0) {
+                    calculatedTime = calculatedTime + 24;
+                };
+
+                totalTime.val(calculatedTime.toString());
+            });
+        });
     </script>
 </head>
 <body>
@@ -181,11 +214,11 @@
                                 </div>
                                 <div class="line">
                                     <label for="tbBeginningTime">beginning time</label>
-                                    <asp:TextBox runat="server" ID="tbBeginningTime" type="TimeOfDay" AllowNegatives="false"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbBeginningTime" type="number" AllowNegatives="false"></asp:TextBox>
                                 </div>
                                 <div class="line">
                                     <label for="tbEndingTime">ending time</label>
-                                    <asp:TextBox runat="server" ID="tbEndingTime" type="TimeOfDay" format="hh:nn" AllowNegatives="false"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="tbEndingTime" type="number" AllowNegatives="false"></asp:TextBox>
                                 </div>
                                 <div class="bottom-line">
                                     <label for="tbTotalTime">total time worked</label>

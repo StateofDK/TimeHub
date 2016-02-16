@@ -70,7 +70,7 @@ namespace TimeHub2
                     }
                 }
             }
-            else
+            //else
             {
                 Response.Redirect("Login.aspx");
             }
