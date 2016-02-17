@@ -47,7 +47,7 @@ namespace TimeHub2
                     password.Size = 200;
                     password.Direction = System.Data.ParameterDirection.Output;
                     cmd.Parameters.Add(password);
-
+                    
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
