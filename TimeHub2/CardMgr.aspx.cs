@@ -149,6 +149,9 @@ namespace TimeHub2
 
                     gvRecentRequestsOT.DataSource = dtOTCards;
                     gvRecentRequestsOT.DataBind();
+
+                    gvRecentRequestsOT.UseAccessibleHeader = true;
+                    gvRecentRequestsOT.HeaderRow.TableSection = TableRowSection.TableHeader;
                 }
                 catch (Exception ex)
                 {
@@ -162,6 +165,9 @@ namespace TimeHub2
 
                     gvRecentRequestsCO.DataSource = dtCOCards;
                     gvRecentRequestsCO.DataBind();
+
+                    gvRecentRequestsCO.UseAccessibleHeader = true;
+                    gvRecentRequestsCO.HeaderRow.TableSection = TableRowSection.TableHeader;
                 }
                 catch (Exception ex)
                 {
@@ -175,6 +181,9 @@ namespace TimeHub2
 
                     gvRecentRequestsTO.DataSource = dtTOCards;
                     gvRecentRequestsTO.DataBind();
+
+                    gvRecentRequestsTO.UseAccessibleHeader = true;
+                    gvRecentRequestsTO.HeaderRow.TableSection = TableRowSection.TableHeader;
                 }
                 catch (Exception ex)
                 {
@@ -188,6 +197,9 @@ namespace TimeHub2
 
                     gvRecentRequestsTR.DataSource = dtTRCards;
                     gvRecentRequestsTR.DataBind();
+
+                    gvRecentRequestsTR.UseAccessibleHeader = true;
+                    gvRecentRequestsTR.HeaderRow.TableSection = TableRowSection.TableHeader;
                 }
                 catch (Exception ex)
                 {
@@ -201,6 +213,9 @@ namespace TimeHub2
 
                     gvRecentRequestsEP.DataSource = dtEPCards;
                     gvRecentRequestsEP.DataBind();
+
+                    gvRecentRequestsEP.UseAccessibleHeader = true;
+                    gvRecentRequestsEP.HeaderRow.TableSection = TableRowSection.TableHeader;
                 }
                 catch (Exception ex)
                 {

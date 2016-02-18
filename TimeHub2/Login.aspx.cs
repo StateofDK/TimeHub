@@ -94,7 +94,7 @@ namespace TimeHub2
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = tb_username.Text;
-                    cmd.Parameters.Add("@createdate", SqlDbType.DateTime2).Value = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
+                    cmd.Parameters.Add("@createdate", SqlDbType.DateTime2).Value = DateTime.Now;
                     cmd.Parameters.Add("@SessionId", SqlDbType.VarChar).Value = SessionId.ToString();
 
                     conn.Open();
@@ -103,7 +103,7 @@ namespace TimeHub2
                 catch(Exception ex)
                 {
                     message = "error inserting session: " + ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ClientScript.RegisterStartupScript(GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
             }
         }

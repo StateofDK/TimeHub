@@ -48,7 +48,7 @@
                     </button>
                     <a class="navbar-brand" href="#">TimeHub - SFPD</a>
                 </div>
-                <div hidden="true">
+                <div hidden="false">
                     <asp:Label runat="server" ID="lblUserLoggedIn"></asp:Label>
                 </div>
                 <div class="navbar-collapse collapse">
