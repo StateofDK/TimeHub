@@ -117,7 +117,7 @@
 
                     <h2 class="sub-header">your recent requests</h2>
                     <div class="table-responsive">
-                        <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequests" GridLines="None" AutoGenerateColumns="false">
+                        <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequests" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                             <Columns>
                                 <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                 <asp:BoundField DataField="RequestType" HeaderText="Card Type" />

@@ -100,7 +100,7 @@
                                 </ul>
                                 <div id="tabs-1">
                                     <div style ="height:600px; overflow:auto;">
-                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsOT" GridLines="None" AutoGenerateColumns="false">
+                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsOT" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                         <Columns>
                                             <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                             <asp:BoundField DataField="beginning_date" HeaderText="Date" DataFormatString="{0:MM-dd-yyyy}" />
@@ -124,7 +124,7 @@
                                 </div>
                                 <div id="tabs-2">
                                     <div style ="height:600px; overflow:auto;">
-                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsCO" GridLines="None" AutoGenerateColumns="false">
+                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsCO" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                         <Columns>
                                             <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                             <asp:BoundField DataField="beginning_date" HeaderText="Date" DataFormatString="{0:MM-dd-yyyy}" />
@@ -146,7 +146,7 @@
                                 </div>
                                 <div id="tabs-3">
                                     <div style ="height:600px; overflow:auto;">
-                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsTO" GridLines="None" AutoGenerateColumns="false">
+                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsTO" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                         <Columns>
                                             <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                             <asp:BoundField DataField="beginning_date" HeaderText="Date" DataFormatString="{0:MM-dd-yyyy}" />
@@ -169,7 +169,7 @@
                                 </div>
                                 <div id="tabs-4">
                                     <div style ="height:600px; overflow:auto;">
-                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsTR" GridLines="None" AutoGenerateColumns="false">
+                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsTR" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                         <Columns>
                                             <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                             <asp:BoundField DataField="beginning_date" HeaderText="Date" DataFormatString="{0:MM-dd-yyyy}" />
@@ -192,7 +192,8 @@
                                     <asp:Button runat="server" ID="btnNewTRRequest" Text="new Training Request" OnClick="RedirectTRRequest" />
                                 </div>
                                 <div id="tabs-5">
-                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsEP" GridLines="None" AutoGenerateColumns="false">
+                                    <div style ="height:600px; overflow:auto;">
+                                    <asp:GridView runat="server" class="table table-striped table-hover" ID="gvRecentRequestsEP" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                         <Columns>
                                             <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                             <asp:BoundField DataField="beginning_date" HeaderText="Date" DataFormatString="{0:MM-dd-yyyy}" />
@@ -210,6 +211,7 @@
                                             </asp:TemplateField>
                                         </Columns>
                                     </asp:GridView>
+                                        </div>
                                     <asp:LinkButton runat="server" ID="lbtnNewEPRequest" Text="new EP request" href="eprequest.aspx"></asp:LinkButton>
                                     <asp:Button runat="server" ID="btnNewEPRequest" Text="new Equal Pay Request" OnClick="RedirectEPRequest" />
                                 </div>

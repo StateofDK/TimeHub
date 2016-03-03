@@ -135,7 +135,7 @@
                         </ul>
                         <div id="tabs-1">
                             <div style="height: 600px; overflow: auto;">
-                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsOT" GridLines="None" AutoGenerateColumns="false">
+                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsOT" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                     <Columns>
                                         <asp:BoundField DataField="submitted_by" HeaderText="submitted by" />
                                         <asp:BoundField DataField="date_submitted" HeaderText="date submitted" />
@@ -159,7 +159,7 @@
                         </div>
                         <div id="tabs-2">
                             <div style="height: 600px; overflow: auto;">
-                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsCO" GridLines="None" AutoGenerateColumns="false">
+                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsCO" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                     <Columns>
                                         <asp:BoundField DataField="submitted_by" HeaderText="submitted by" />
                                         <asp:BoundField DataField="date_submitted" HeaderText="date submitted" />
@@ -182,7 +182,7 @@
                         </div>
                         <div id="tabs-3">
                             <div style="height: 600px; overflow: auto;">
-                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsTO" GridLines="None" AutoGenerateColumns="false">
+                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsTO" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                     <Columns>
                                         <asp:BoundField DataField="submitted_by" HeaderText="submitted by" />
                                         <asp:BoundField DataField="date_submitted" HeaderText="date submitted" />
@@ -206,7 +206,7 @@
                         </div>
                         <div id="tabs-4">
                             <div style="height: 600px; overflow: auto;">
-                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsTR" GridLines="None" AutoGenerateColumns="false">
+                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsTR" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                     <Columns>
                                         <asp:BoundField DataField="submitted_by" HeaderText="submitted by" />
                                         <asp:BoundField DataField="date_submitted" HeaderText="date submitted" />
@@ -231,7 +231,7 @@
                         </div>
                         <div id="tabs-5">
                             <div style="height: 600px; overflow: auto;">
-                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsEP" GridLines="None" AutoGenerateColumns="false">
+                                <asp:GridView runat="server" class="table table-striped table-hover" ID="gvPendingRequestsEP" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true" EmptyDataText="No Records Found">
                                     <Columns>
                                         <asp:BoundField DataField="submitted_by" HeaderText="submitted by" />
                                         <asp:BoundField DataField="date_submitted" HeaderText="date submitted" />

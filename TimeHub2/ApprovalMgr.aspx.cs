@@ -18,11 +18,45 @@ namespace TimeHub2
             //show user logged in
             if (Session["New"] != null)
             {
-                lblUserLoggedIn.Text = Session["New"].ToString();
+                string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connstring))
+                {
+                    try
+                    {
+                        //retreive UserId from Session table
+
+                        SqlCommand cmd = new SqlCommand("spSelectUserId", conn);
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        cmd.Parameters.Add("@SessionId", SqlDbType.VarChar).Value = Session["New"].ToString();
+
+                        SqlParameter UserId = new SqlParameter();
+                        UserId.ParameterName = "@UserId";
+                        UserId.SqlDbType = System.Data.SqlDbType.VarChar;
+                        UserId.Size = 200;
+                        UserId.Direction = System.Data.ParameterDirection.Output;
+                        cmd.Parameters.Add(UserId);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        string UserIdOut = UserId.Value.ToString();
+
+                        lblUserLoggedIn.Text = UserIdOut;
+                    }
+                    catch (Exception ex)
+                    {
+                        PopupTitle = "error retrieving UserID: ";
+                        message = ex.Message;
+                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    }
+                }
             }
             //else redirect to login
             else
+            {
                 Response.Redirect("Login.aspx");
+            }
 
             PopulateCardManagers(null, null);
         }
@@ -109,12 +143,14 @@ namespace TimeHub2
 
                 conn.Open();
 
+                int RowCount = new int();
+
                 try
                 {
-                    daPendingRequestsOT.Fill(dtOTCards);
+                        daPendingRequestsOT.Fill(dtOTCards);
 
-                    gvPendingRequestsOT.DataSource = dtOTCards;
-                    gvPendingRequestsOT.DataBind();
+                        gvPendingRequestsOT.DataSource = dtOTCards;
+                        gvPendingRequestsOT.DataBind();
                 }
                 catch (Exception ex)
                 {
