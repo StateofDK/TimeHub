@@ -66,11 +66,11 @@ namespace TimeHub2
                     {
                         PopupTitle = "error retreiving session username: ";
                         ErrorMessage = ex.Message;
-                        DisplayErrorDialog(null, null);
+                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
                     }
                 }
             }
-            //else
+            else
             {
                 Response.Redirect("Login.aspx");
             }
@@ -105,6 +105,9 @@ namespace TimeHub2
 
                     ConfigureButtons(null, null);
                 }
+
+                GetAssignments(null, null);
+                GetShifts(null, null);
             }
         }
 
@@ -1241,6 +1244,78 @@ namespace TimeHub2
         protected void DisplayErrorDialog(object sender, EventArgs e)
         {
             ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
+        }
+
+        protected void GetAssignments(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectAssignments", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlAssignment.DataSource = ds;
+                    ddlAssignment.DataTextField = "DisplayName";
+                    ddlAssignment.DataValueField = "AssignmentId";
+                    ddlAssignment.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
+                }
+            }
+            ddlAssignment.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlAssignment.SelectedIndex = 0;
+        }
+
+        protected void GetShifts(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectShifts", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlShift.DataSource = ds;
+                    ddlShift.DataTextField = "DisplayName";
+                    ddlShift.DataValueField = "ShiftID";
+                    ddlShift.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
+                }
+            }
+            ddlShift.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlShift.SelectedIndex = 0;
         }
     }
 }

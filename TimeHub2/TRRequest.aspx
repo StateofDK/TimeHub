@@ -106,6 +106,7 @@
                         <li><a href="UserHome.aspx">Home</a></li>
                         <li><a href="cardmgr.aspx">Card Manager</a></li>
                         <li><a href="approvalmgr.aspx">Approval manager</a></li>
+                        <li><a href="Search.aspx">Search</a></li>
                     </ul>
                 </div>
                 <!--/span-->
@@ -137,57 +138,7 @@
                             </div>
                             <div class="line">
                                 <label for="ddlAssignment">assignment</label>
-                                <asp:DropDownList runat="server" ID="ddlAssignment" Enabled="false">
-                                    <asp:ListItem Value='NULL' Text='Select' />
-                                    <asp:ListItem Value="1" Text='Central Station' />
-                                    <asp:ListItem Value="2" Text='Central Station - SIT' />
-                                    <asp:ListItem Value="3" Text='Southern Station' />
-                                    <asp:ListItem Value="4" Text='Southern Station - SIT' />
-                                    <asp:ListItem Value="5" Text='Bayview Station' />
-                                    <asp:ListItem Value="6" Text='Bayview Station - SIT' />
-                                    <asp:ListItem Value="7" Text='Mission Station' />
-                                    <asp:ListItem Value="8" Text='Mission Station - SIT' />
-                                    <asp:ListItem Value="9" Text='Northern Station' />
-                                    <asp:ListItem Value="10" Text='Northern Station - SIT' />
-                                    <asp:ListItem Value="11" Text='Park Station' />
-                                    <asp:ListItem Value="12" Text='Park Station - SIT' />
-                                    <asp:ListItem Value="13" Text='Richmond Station' />
-                                    <asp:ListItem Value="14" Text='Richmond Station - SIT' />
-                                    <asp:ListItem Value="15" Text='Ingleside Station' />
-                                    <asp:ListItem Value="16" Text='Ingleside Station - SIT' />
-                                    <asp:ListItem Value="17" Text='Taraval Station' />
-                                    <asp:ListItem Value="18" Text='Taraval Station - SIT' />
-                                    <asp:ListItem Value="19" Text='Tenderloin Station' />
-                                    <asp:ListItem Value="20" Text='Tenderloin Station - SIT' />
-                                    <asp:ListItem Value="21" Text='Traffic Company' />
-                                    <asp:ListItem Value="22" Text='Crime Scene Investigations' />
-                                    <asp:ListItem Value="23" Text='Department Operations Center' />
-                                    <asp:ListItem Value="24" Text='Equal Employment Opportunity' />
-                                    <asp:ListItem Value="25" Text='Facilities Management' />
-                                    <asp:ListItem Value="26" Text='Field Operations Bureau' />
-                                    <asp:ListItem Value="27" Text='Fleet Management' />
-                                    <asp:ListItem Value="28" Text='Fugitive Recovery Enforcement Team' />
-                                    <asp:ListItem Value="29" Text='Gang Task Force' />
-                                    <asp:ListItem Value="30" Text='Graffiti Abatement' />
-                                    <asp:ListItem Value="31" Text='Hit & Run' />
-                                    <asp:ListItem Value="32" Text='Homeland Security Unit' />
-                                    <asp:ListItem Value="33" Text='Homicide' />
-                                    <asp:ListItem Value="34" Text='Housing Unit' />
-                                    <asp:ListItem Value="35" Text='Municipal Transport Agency' />
-                                    <asp:ListItem Value="36" Text='Narcotics' />
-                                    <asp:ListItem Value="37" Text='Outside Agency' />
-                                    <asp:ListItem Value="38" Text='Permits Bureau' />
-                                    <asp:ListItem Value="39" Text='Property Section' />
-                                    <asp:ListItem Value="40" Text='Risk Management Office' />
-                                    <asp:ListItem Value="41" Text='Special Victims Unit' />
-                                    <asp:ListItem Value="42" Text='Special Investigations' />
-                                    <asp:ListItem Value="43" Text='Violence Reduction Team' />
-                                    <asp:ListItem Value="44" Text='Administration Bureau' />
-                                    <asp:ListItem Value="45" Text='Airport Bureau' />
-                                    <asp:ListItem Value="46" Text='Alcoholic Beverage Control Liaison' />
-                                    <asp:ListItem Value="47" Text='Arson Unit' />
-                                    <asp:ListItem Value="0" Text='Other - Not In List' />
-                                </asp:DropDownList>
+                                <asp:DropDownList runat="server" ID="ddlAssignment" Enabled="false"></asp:DropDownList>
                                 <label for="tbDetail">detailed to</label>
                                 <asp:TextBox runat="server" ID="tbDetail"></asp:TextBox>
                             </div>

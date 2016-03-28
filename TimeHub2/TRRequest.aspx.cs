@@ -63,6 +63,7 @@ namespace TimeHub2
                         ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                     }
                 }
+                GetAssignments(null, null);
             }
             else
             {
@@ -1082,6 +1083,42 @@ namespace TimeHub2
         {
             PopupTitle = "Success!";
             ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+        }
+
+        protected void GetAssignments(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectAssignments", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlAssignment.DataSource = ds;
+                    ddlAssignment.DataTextField = "DisplayName";
+                    ddlAssignment.DataValueField = "AssignmentId";
+                    ddlAssignment.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    message = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                }
+            }
+            ddlAssignment.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlAssignment.SelectedIndex = 0;
         }
     }
 }

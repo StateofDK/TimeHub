@@ -72,6 +72,7 @@
                         <li><a href="UserHome.aspx">Home</a></li>
                         <li><a href="cardmgr.aspx">Card Manager</a></li>
                         <li><a href="approvalmgr.aspx">Approval manager</a></li>
+                        <li><a href="Search.aspx">Search</a></li>
                     </ul>
                 </div>
                 <!--/span-->

@@ -98,6 +98,9 @@ namespace TimeHub2
                     //card number is present. User is viewing existing request. configure existing card populated with table data
                     ConfigurePageExisting(null, null);
                 }
+                GetAssignments(null, null);
+                GetShifts(null, null);
+                GetOvertimeCode(null, null);
             }
         }
 
@@ -1113,6 +1116,114 @@ namespace TimeHub2
         {
             PopupTitle = "Success!";
             ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+        }
+
+        protected void GetOvertimeCode(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectOvertimeCodes", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlOTCode.DataSource = ds;
+                    ddlOTCode.DataTextField = "Type";
+                    ddlOTCode.DataValueField = "Id";
+                    ddlOTCode.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    message = "error populating overtime code dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                }
+            }
+            ddlOTCode.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlOTCode.SelectedIndex = 0;
+        }
+
+        protected void GetAssignments(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectAssignments", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlAssignment.DataSource = ds;
+                    ddlAssignment.DataTextField = "DisplayName";
+                    ddlAssignment.DataValueField = "AssignmentId";
+                    ddlAssignment.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    message = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                }
+            }
+            ddlAssignment.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlAssignment.SelectedIndex = 0;
+        }
+
+        protected void GetShifts(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectShifts", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlShift.DataSource = ds;
+                    ddlShift.DataTextField = "DisplayName";
+                    ddlShift.DataValueField = "ShiftID";
+                    ddlShift.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    message = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                }
+            }
+            ddlShift.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlShift.SelectedIndex = 0;
         }
     }
 }

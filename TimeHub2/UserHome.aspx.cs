@@ -151,12 +151,5 @@ namespace TimeHub2
                 }
             }
         }
-
-        //example of how to set values in gridview rows.  must be accompanied by the tag 'OnRowDataBound="SetLink"' in the asp gridview control
-        //
-        //protected void SetLink(object sender, GridViewRowEventArgs e)
-        //{
-        //    myLink = "123";
-        //}
     }
 }

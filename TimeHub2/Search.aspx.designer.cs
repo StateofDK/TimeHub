@@ -58,6 +58,15 @@ namespace TimeHub2.stylesheets {
         protected global::System.Web.UI.WebControls.TextBox tbUsername;
         
         /// <summary>
+        /// tbUserStar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbUserStar;
+        
+        /// <summary>
         /// ddlAssignment control.
         /// </summary>
         /// <remarks>
@@ -67,67 +76,13 @@ namespace TimeHub2.stylesheets {
         protected global::System.Web.UI.WebControls.DropDownList ddlAssignment;
         
         /// <summary>
-        /// ddlRequestType control.
+        /// cblRequestType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlRequestType;
-        
-        /// <summary>
-        /// OTSubTypes control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl OTSubTypes;
-        
-        /// <summary>
-        /// ddlOTCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlOTCode;
-        
-        /// <summary>
-        /// rblCourtSession control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblCourtSession;
-        
-        /// <summary>
-        /// rblCourtType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblCourtType;
-        
-        /// <summary>
-        /// rblAppearanceType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblAppearanceType;
-        
-        /// <summary>
-        /// ddlTrainingCode control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTrainingCode;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblRequestType;
         
         /// <summary>
         /// tbBeginningDate control.
@@ -139,6 +94,24 @@ namespace TimeHub2.stylesheets {
         protected global::System.Web.UI.WebControls.TextBox tbBeginningDate;
         
         /// <summary>
+        /// tbDateRangeBegin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbDateRangeBegin;
+        
+        /// <summary>
+        /// tbDateRangeEnd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbDateRangeEnd;
+        
+        /// <summary>
         /// tbAccountNumber control.
         /// </summary>
         /// <remarks>
@@ -146,6 +119,60 @@ namespace TimeHub2.stylesheets {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbAccountNumber;
+        
+        /// <summary>
+        /// tbCaseNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbCaseNumber;
+        
+        /// <summary>
+        /// cblOTCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblOTCode;
+        
+        /// <summary>
+        /// cblCourtSession control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblCourtSession;
+        
+        /// <summary>
+        /// cblCourtType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblCourtType;
+        
+        /// <summary>
+        /// cblAppearanceType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblAppearanceType;
+        
+        /// <summary>
+        /// cblTrainingCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblTrainingCode;
         
         /// <summary>
         /// btnSearch control.
