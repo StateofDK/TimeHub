@@ -13,13 +13,5 @@ namespace TimeHub2
         {
 
         }
-
-        protected void btnShowPopup_Click(object sender, EventArgs e)
-        {
-            string test = "test";
-
-            string message = "Message from server side";
-            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
-        }
     }
 }

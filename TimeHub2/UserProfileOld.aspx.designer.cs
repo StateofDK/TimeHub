@@ -10,25 +10,34 @@
 namespace TimeHub2 {
     
     
-    public partial class UserProfile {
+    public partial class UserProfileTest {
         
         /// <summary>
-        /// userloggedin control.
+        /// userHome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label userloggedin;
+        protected global::System.Web.UI.HtmlControls.HtmlForm userHome;
         
         /// <summary>
-        /// buttonLogout control.
+        /// lblUserLoggedIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonLogout;
+        protected global::System.Web.UI.WebControls.Label lblUserLoggedIn;
+        
+        /// <summary>
+        /// lbtn_logout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtn_logout;
         
         /// <summary>
         /// username control.

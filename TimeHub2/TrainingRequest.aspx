@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EPRequest.aspx.cs" Inherits="TimeHub2.EPRequest1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="TrainingRequest.aspx.cs" Inherits="TimeHub2.TRRequest1" %>
 
 <!DOCTYPE html>
 
@@ -19,14 +19,14 @@
                 $("#dialog").html(message);
                 $("#dialog").dialog({
                     title: '<%=PopupTitle%>',
-                   buttons: {
-                       Close: function () {
-                           $(this).dialog('close');
-                       }
-                   },
-                   modal: true
-               });
-               $(".ui-dialog-titlebar").hide();
+                    buttons: {
+                        Close: function () {
+                            $(this).dialog('close');
+                        }
+                    },
+                    modal: true
+                });
+                $(".ui-dialog-titlebar").hide();
             });
         };
 
@@ -118,7 +118,7 @@
                         <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
                     </p>
 
-                    <h1 class="page-header">Equal Pay compensation request</h1>
+                    <h1 class="page-header">training compensation request</h1>
 
                     <div class="divCardInfo">
                         <asp:Label runat="server" ID="lblCardNumber" AssociatedControlID="tbCardNumber" Visible="true">Card Number:</asp:Label>
@@ -129,7 +129,7 @@
                     <div class="card">
                         <div class="box">
                             <div class="line">
-                                <label for="last_nametbLastName">(print) last name</label>
+                                <label for="tbLastName">(print) last name</label>
                                 <asp:TextBox runat="server" ID="tbLastName"></asp:TextBox>
                                 <label for="tbFirstName">first</label>
                                 <asp:TextBox runat="server" ID="tbFirstName"></asp:TextBox>
@@ -144,24 +144,113 @@
                             </div>
                             <div class="line">
                                 <label for="tbBeginningDate">beginning day & date of overtime</label>
-                                <asp:TextBox runat="server" ID="tbBeginningDate" type="date"></asp:TextBox>
+                                <asp:TextBox runat="server" ID="tbBeginningDate" type="date" onChange="return getBegDay()"></asp:TextBox>
                             </div>
                             <div class="line">
-                                <label for="tbEndingtbate">ending day & date of overtime</label>
-                                <asp:TextBox runat="server" ID="tbEndingDate" type="date"></asp:TextBox>
+                                <label for="tbEndingDate">ending day & date of overtime</label>
+                                <asp:TextBox runat="server" ID="tbEndingDate" type="date" onChange="return getEndDay()"></asp:TextBox>
                             </div>
                             <div class="bottom-line">
-                                <label for="tbInPlaceName">name of person worked in place of</label>
-                                <asp:TextBox runat="server" ID="tbInPlaceName"></asp:TextBox>
-                                <label for="tbInPlaceRank">rank</label>
-                                <asp:TextBox runat="server" ID="tbInPlaceRank"></asp:TextBox>
+                                <label for="tbILHoliday">in-lieu of Holiday</label>
+                                <asp:TextBox runat="server" ID="tbILHoliday"></asp:TextBox>
+                                <label for="rblTimePay">request</label>
+                                <asp:RadioButtonList runat="server" ID="rblTimePay" RepeatDirection="Horizontal">
+                                    <asp:ListItem>time</asp:ListItem>
+                                    <asp:ListItem>pay</asp:ListItem>
+                                </asp:RadioButtonList>
                             </div>
                         </div>
                         <div class="box">
                             <div class="box">
                                 <div class="line">
-                                    <label for="tbSubmittedDate">date submitted</label>
-                                    <asp:TextBox runat="server" ID="tbSubmittedDate" ReadOnly="true"></asp:TextBox>
+                                    <label for="ddlOTCode">ot code no.</label>
+                                    <asp:DropDownList runat="server" ID="ddlOTCode">
+                                        <asp:ListItem Value='0' Text='Select' />
+                                        <asp:ListItem>1</asp:ListItem>
+                                        <asp:ListItem>2</asp:ListItem>
+                                        <asp:ListItem>3</asp:ListItem>
+                                        <asp:ListItem>4</asp:ListItem>
+                                        <asp:ListItem>5</asp:ListItem>
+                                        <asp:ListItem>6</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="line">
+                                    <label for="ddlShift">regular shift</label>
+                                    <asp:DropDownList runat="server" ID="ddlShift">
+                                        <asp:ListItem Value='NULL' Text='Select' />
+                                        <asp:ListItem Value='1' Text='0000/0800' />
+                                        <asp:ListItem Value='25' Text='0000/0900' />
+                                        <asp:ListItem Value='49' Text='0000/1000' />
+                                        <asp:ListItem Value='2' Text='0100/0900' />
+                                        <asp:ListItem Value='26' Text='0100/1000' />
+                                        <asp:ListItem Value='50' Text='0100/1100' />
+                                        <asp:ListItem Value='3' Text='0200/1000' />
+                                        <asp:ListItem Value='27' Text='0200/1100' />
+                                        <asp:ListItem Value='51' Text='0200/1200' />
+                                        <asp:ListItem Value='4' Text='0300/1100' />
+                                        <asp:ListItem Value='28' Text='0300/1200' />
+                                        <asp:ListItem Value='52' Text='0300/1300' />
+                                        <asp:ListItem Value='5' Text='0400/1200' />
+                                        <asp:ListItem Value='29' Text='0400/1300' />
+                                        <asp:ListItem Value='53' Text='0400/1400' />
+                                        <asp:ListItem Value='6' Text='0500/1300' />
+                                        <asp:ListItem Value='30' Text='0500/1400' />
+                                        <asp:ListItem Value='54' Text='0500/1500' />
+                                        <asp:ListItem Value='7' Text='0600/1400' />
+                                        <asp:ListItem Value='31' Text='0600/1500' />
+                                        <asp:ListItem Value='55' Text='0600/1600' />
+                                        <asp:ListItem Value='8' Text='0700/1500' />
+                                        <asp:ListItem Value='32' Text='0700/1600' />
+                                        <asp:ListItem Value='56' Text='0700/1700' />
+                                        <asp:ListItem Value='9' Text='0800/1600' />
+                                        <asp:ListItem Value='33' Text='0800/1700' />
+                                        <asp:ListItem Value='57' Text='0800/1800' />
+                                        <asp:ListItem Value='10' Text='0900/1700' />
+                                        <asp:ListItem Value='34' Text='0900/1800' />
+                                        <asp:ListItem Value='58' Text='0900/1900' />
+                                        <asp:ListItem Value='11' Text='1000/1800' />
+                                        <asp:ListItem Value='35' Text='1000/1900' />
+                                        <asp:ListItem Value='59' Text='1000/2000' />
+                                        <asp:ListItem Value='12' Text='1100/1900' />
+                                        <asp:ListItem Value='36' Text='1100/2000' />
+                                        <asp:ListItem Value='60' Text='1100/2100' />
+                                        <asp:ListItem Value='13' Text='1200/2000' />
+                                        <asp:ListItem Value='37' Text='1200/2100' />
+                                        <asp:ListItem Value='61' Text='1200/2200' />
+                                        <asp:ListItem Value='14' Text='1300/2100' />
+                                        <asp:ListItem Value='38' Text='1300/2200' />
+                                        <asp:ListItem Value='62' Text='1300/2300' />
+                                        <asp:ListItem Value='15' Text='1400/2200' />
+                                        <asp:ListItem Value='39' Text='1400/2300' />
+                                        <asp:ListItem Value='63' Text='1400/0000' />
+                                        <asp:ListItem Value='16' Text='1500/2300' />
+                                        <asp:ListItem Value='40' Text='1500/0000' />
+                                        <asp:ListItem Value='64' Text='1500/0100' />
+                                        <asp:ListItem Value='17' Text='1600/0000' />
+                                        <asp:ListItem Value='41' Text='1600/0100' />
+                                        <asp:ListItem Value='65' Text='1600/0200' />
+                                        <asp:ListItem Value='18' Text='1700/0100' />
+                                        <asp:ListItem Value='42' Text='1700/0200' />
+                                        <asp:ListItem Value='66' Text='1700/0300' />
+                                        <asp:ListItem Value='19' Text='1800/0200' />
+                                        <asp:ListItem Value='43' Text='1800/0300' />
+                                        <asp:ListItem Value='67' Text='1800/0400' />
+                                        <asp:ListItem Value='20' Text='1900/0300' />
+                                        <asp:ListItem Value='44' Text='1900/0400' />
+                                        <asp:ListItem Value='68' Text='1900/0500' />
+                                        <asp:ListItem Value='21' Text='2000/0400' />
+                                        <asp:ListItem Value='45' Text='2000/0500' />
+                                        <asp:ListItem Value='69' Text='2000/0600' />
+                                        <asp:ListItem Value='22' Text='2100/0500' />
+                                        <asp:ListItem Value='46' Text='2100/0600' />
+                                        <asp:ListItem Value='70' Text='2100/0700' />
+                                        <asp:ListItem Value='23' Text='2200/0600' />
+                                        <asp:ListItem Value='47' Text='2200/0700' />
+                                        <asp:ListItem Value='71' Text='2200/0800' />
+                                        <asp:ListItem Value='24' Text='2300/0700' />
+                                        <asp:ListItem Value='48' Text='2300/0800' />
+                                        <asp:ListItem Value='72' Text='2300/0900' />
+                                    </asp:DropDownList>
                                 </div>
                                 <div class="line">
                                     <label for="tbBeginningTime">beginning time</label>
@@ -190,6 +279,8 @@
                                     <asp:TextBox runat="server" ID="tbUserRank"></asp:TextBox>
                                     <label for="tbUserStar">star</label>
                                     <asp:TextBox runat="server" ID="tbUserStar" type="number"></asp:TextBox>
+                                    <label for="tbSubmittedDate">date submitted</label>
+                                    <asp:TextBox runat="server" ID="tbSubmittedDate"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="box">
@@ -202,6 +293,8 @@
                                     <asp:TextBox runat="server" ID="tbApprovedRank"></asp:TextBox>
                                     <label for="tbApprovedStar">star</label>
                                     <asp:TextBox runat="server" ID="tbApprovedStar"></asp:TextBox>
+                                    <label for="tbApprovedDate">date aproved</label>
+                                    <asp:TextBox runat="server" ID="tbApprovedDate"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -209,40 +302,33 @@
                     <br />
                     <br />
                     <div class="card">
-                        <div class="table">
-                            <asp:CheckBoxList runat="server" RepeatColumns="9" RepeatDirection="Horizontal" RepeatLayout="Table">
-                                <asp:ListItem>1</asp:ListItem>
-                                <asp:ListItem>2</asp:ListItem>
-                                <asp:ListItem>3</asp:ListItem>
-                                <asp:ListItem>4</asp:ListItem>
-                                <asp:ListItem>5</asp:ListItem>
-                                <asp:ListItem>6</asp:ListItem>
-                                <asp:ListItem>7</asp:ListItem>
-                                <asp:ListItem>8</asp:ListItem>
-                                <asp:ListItem>9</asp:ListItem>
-                                <asp:ListItem>10</asp:ListItem>
-                                <asp:ListItem>11</asp:ListItem>
-                                <asp:ListItem>12</asp:ListItem>
-                                <asp:ListItem>13</asp:ListItem>
-                                <asp:ListItem>14</asp:ListItem>
-                                <asp:ListItem>15</asp:ListItem>
-                                <asp:ListItem>16</asp:ListItem>
-                                <asp:ListItem>17</asp:ListItem>
-                                <asp:ListItem>18</asp:ListItem>
-                                <asp:ListItem>19</asp:ListItem>
-                                <asp:ListItem>20</asp:ListItem>
-                                <asp:ListItem>21</asp:ListItem>
-                                <asp:ListItem>22</asp:ListItem>
-                                <asp:ListItem>23</asp:ListItem>
-                                <asp:ListItem>24</asp:ListItem>
-                                <asp:ListItem>25</asp:ListItem>
-                                <asp:ListItem>26</asp:ListItem>
-                                <asp:ListItem>27</asp:ListItem>
-                                <asp:ListItem>28</asp:ListItem>
-                                <asp:ListItem>29</asp:ListItem>
-                                <asp:ListItem>30</asp:ListItem>
-                                <asp:ListItem>31</asp:ListItem>
-                            </asp:CheckBoxList>
+                        <div class="box">
+                            <div class="line">
+                                <label for="tbCaseNumber">nature of work: include incident case number</label>
+                                <asp:TextBox runat="server" ID="tbCaseNumber"></asp:TextBox>
+                            </div>
+                            <div class="line">
+                                <label for="tbCertifiedBy">
+                                    <asp:TextBox runat="server" ID="tbCertifiedBy"></asp:TextBox>
+                                </label>
+                            </div>
+                            <div class="line">
+                                <div>
+                                    <span>overtime categories</span>
+                                    <asp:BulletedList runat="server" BulletStyle="Numbered" FirstBulletNumber="1">
+                                        <asp:ListItem>fto compensation</asp:ListItem>
+                                        <asp:ListItem>range requalification</asp:ListItem>
+                                    </asp:BulletedList>
+                                    <asp:BulletedList runat="server" BulletStyle="Numbered" FirstBulletNumber="3">
+                                        <asp:ListItem>physical agility test</asp:ListItem>
+                                        <asp:ListItem>biweekly training</asp:ListItem>
+                                    </asp:BulletedList>
+                                    <asp:BulletedList runat="server" BulletStyle="Numbered" FirstBulletNumber="5">
+                                        <asp:ListItem>remediation</asp:ListItem>
+                                        <asp:ListItem>other</asp:ListItem>
+                                    </asp:BulletedList>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <asp:Label runat="server" ID="lblSupervisorComments" for="tbSupervisorComments" AssociatedControlID="tbSupervisorComments" Visible="false">Supervisor Comments:</asp:Label>

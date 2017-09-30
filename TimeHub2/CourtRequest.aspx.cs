@@ -10,7 +10,7 @@ using System.Configuration;
 
 namespace TimeHub2
 {
-    public partial class TORequest : System.Web.UI.Page
+    public partial class CORequestNew : System.Web.UI.Page
     {
         public string PopupTitle
         {
@@ -18,7 +18,13 @@ namespace TimeHub2
             set;
         }
 
-        public string message
+        public string SuccessMessage
+        {
+            get;
+            set;
+        }
+
+        public string ErrorMessage
         {
             get;
             set;
@@ -59,11 +65,10 @@ namespace TimeHub2
                     catch (Exception ex)
                     {
                         PopupTitle = "error retreiving session username: ";
-                        message = ex.Message;
-                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                        ErrorMessage = ex.Message;
+                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
                     }
                 }
-                GetAssignments(null, null);
             }
             else
             {
@@ -97,7 +102,12 @@ namespace TimeHub2
                 {
                     //card number is present. User is viewing existing request. configure existing card populated with table data
                     ConfigurePageExisting(null, null);
+
+                    ConfigureButtons(null, null);
                 }
+
+                GetAssignments(null, null);
+                GetShifts(null, null);
             }
         }
 
@@ -127,7 +137,7 @@ namespace TimeHub2
                     firstName.SqlDbType = System.Data.SqlDbType.VarChar;
                     lastName.SqlDbType = System.Data.SqlDbType.VarChar;
                     middleInitial.SqlDbType = System.Data.SqlDbType.VarChar;
-                    assign.SqlDbType = System.Data.SqlDbType.VarChar;
+                    assign.SqlDbType = System.Data.SqlDbType.Int;
 
                     firstName.Size = 200;
                     lastName.Size = 200;
@@ -157,13 +167,15 @@ namespace TimeHub2
                     tbMiddleInitial.Text = middleInitialOut;
                     ddlAssignment.Text = assignmentOut;
 
+                    tbBeginningDate.Text = DateTime.Now.ToShortDateString();
+
                     conn.Close();
                 }
                 catch (Exception ex)
                 {
                     PopupTitle = "new request population error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
                 try
                 {
@@ -183,24 +195,27 @@ namespace TimeHub2
                 catch (Exception ex)
                 {
                     PopupTitle = "new page configuration error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
 
         protected void ConfigurePageExisting(object sender, EventArgs e)
         {
+            lblCardNumber.Visible = true;
+            tbCardNumber.Visible = true;
+
             string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connstring))
             {
                 //populate existing request data from apropriate request table
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("spSelectExistingRequestDataTO", conn);
+                    SqlCommand cmd = new SqlCommand("spSelectExistingRequestDataCO", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("CardNumber", SqlDbType.VarChar).Value = tbCardNumber.Text;
+                    cmd.Parameters.Add("@CardNumber", SqlDbType.VarChar).Value = tbCardNumber.Text;
 
                     SqlParameter firstName = new SqlParameter();
                     SqlParameter lastName = new SqlParameter();
@@ -209,6 +224,7 @@ namespace TimeHub2
                     SqlParameter detail = new SqlParameter();
                     SqlParameter beginningDate = new SqlParameter();
                     SqlParameter endingDate = new SqlParameter();
+                    SqlParameter shift = new SqlParameter();
                     SqlParameter beginningTime = new SqlParameter();
                     SqlParameter endingTime = new SqlParameter();
                     SqlParameter totalTime = new SqlParameter();
@@ -216,10 +232,24 @@ namespace TimeHub2
                     SqlParameter dateSubmitted = new SqlParameter();
                     SqlParameter userStar = new SqlParameter();
                     SqlParameter userRank = new SqlParameter();
+                    SqlParameter comment = new SqlParameter();
+                    SqlParameter certifiedBy = new SqlParameter();
+                    SqlParameter inputBy = new SqlParameter();
                     SqlParameter approvedBy = new SqlParameter();
+                    SqlParameter dateApproved = new SqlParameter();
                     SqlParameter approvedRank = new SqlParameter();
                     SqlParameter approvedStar = new SqlParameter();
-                    SqlParameter timeUsed = new SqlParameter();
+                    SqlParameter caseNumber = new SqlParameter();
+                    SqlParameter courtSession = new SqlParameter();
+                    SqlParameter appearanceType = new SqlParameter();
+                    SqlParameter department = new SqlParameter();
+                    SqlParameter courtType = new SqlParameter();
+                    SqlParameter defendant = new SqlParameter();
+                    SqlParameter charges = new SqlParameter();
+                    SqlParameter courtNumber = new SqlParameter();
+                    SqlParameter daApproved = new SqlParameter();
+                    SqlParameter daApprovedDate = new SqlParameter();
+                    SqlParameter daApprovedTime = new SqlParameter();
                     SqlParameter statusId = new SqlParameter();
                     SqlParameter userCredited = new SqlParameter();
                     SqlParameter supervisorComments = new SqlParameter();
@@ -231,6 +261,7 @@ namespace TimeHub2
                     detail.ParameterName = "@Detail";
                     beginningDate.ParameterName = "@BeginningDate";
                     endingDate.ParameterName = "@EndingDate";
+                    shift.ParameterName = "@Shift";
                     beginningTime.ParameterName = "@BeginningTime";
                     endingTime.ParameterName = "@EndingTime";
                     totalTime.ParameterName = "@TotalTime";
@@ -238,10 +269,24 @@ namespace TimeHub2
                     dateSubmitted.ParameterName = "@DateSubmitted";
                     userStar.ParameterName = "@UserStar";
                     userRank.ParameterName = "@UserRank";
+                    comment.ParameterName = "@Comment";
+                    certifiedBy.ParameterName = "@CertifiedBy";
+                    inputBy.ParameterName = "@InputBy";
                     approvedBy.ParameterName = "@ApprovedBy";
+                    dateApproved.ParameterName = "@DateApproved";
                     approvedRank.ParameterName = "@ApprovedRank";
                     approvedStar.ParameterName = "@ApprovedStar";
-                    timeUsed.ParameterName = "@TimeUsed";
+                    caseNumber.ParameterName = "@CaseNumber";
+                    courtSession.ParameterName = "@CourtSession";
+                    appearanceType.ParameterName = "@AppearanceType";
+                    department.ParameterName = "@Department";
+                    courtType.ParameterName = "@CourtType";
+                    defendant.ParameterName = "@Defendant";
+                    charges.ParameterName = "@Charges";
+                    courtNumber.ParameterName = "@CourtNumber";
+                    daApproved.ParameterName = "@DAApproved";
+                    daApprovedDate.ParameterName = "@DAApprovedDate";
+                    daApprovedTime.ParameterName = "@DAApprovedTime";
                     statusId.ParameterName = "@StatusId";
                     userCredited.ParameterName = "@UserCredited";
                     supervisorComments.ParameterName = "@SupervisorComments";
@@ -253,6 +298,7 @@ namespace TimeHub2
                     detail.SqlDbType = System.Data.SqlDbType.VarChar;
                     beginningDate.SqlDbType = System.Data.SqlDbType.Date;
                     endingDate.SqlDbType = System.Data.SqlDbType.Date;
+                    shift.SqlDbType = System.Data.SqlDbType.Int;
                     beginningTime.SqlDbType = System.Data.SqlDbType.Time;
                     endingTime.SqlDbType = System.Data.SqlDbType.Time;
                     totalTime.SqlDbType = System.Data.SqlDbType.Int;
@@ -260,10 +306,24 @@ namespace TimeHub2
                     dateSubmitted.SqlDbType = System.Data.SqlDbType.Date;
                     userStar.SqlDbType = System.Data.SqlDbType.Int;
                     userRank.SqlDbType = System.Data.SqlDbType.VarChar;
+                    comment.SqlDbType = System.Data.SqlDbType.VarChar;
+                    certifiedBy.SqlDbType = System.Data.SqlDbType.VarChar;
+                    inputBy.SqlDbType = System.Data.SqlDbType.VarChar;
                     approvedBy.SqlDbType = System.Data.SqlDbType.VarChar;
+                    dateApproved.SqlDbType = System.Data.SqlDbType.Date;
                     approvedRank.SqlDbType = System.Data.SqlDbType.VarChar;
                     approvedStar.SqlDbType = System.Data.SqlDbType.Int;
-                    timeUsed.SqlDbType = System.Data.SqlDbType.VarChar;
+                    caseNumber.SqlDbType = System.Data.SqlDbType.VarChar;
+                    courtSession.SqlDbType = System.Data.SqlDbType.VarChar;
+                    appearanceType.SqlDbType = System.Data.SqlDbType.VarChar;
+                    department.SqlDbType = System.Data.SqlDbType.VarChar;
+                    courtType.SqlDbType = System.Data.SqlDbType.VarChar;
+                    defendant.SqlDbType = System.Data.SqlDbType.VarChar;
+                    charges.SqlDbType = System.Data.SqlDbType.VarChar;
+                    courtNumber.SqlDbType = System.Data.SqlDbType.Int;
+                    daApproved.SqlDbType = System.Data.SqlDbType.VarChar;
+                    daApprovedDate.SqlDbType = System.Data.SqlDbType.Date;
+                    daApprovedTime.SqlDbType = System.Data.SqlDbType.Time;
                     statusId.SqlDbType = System.Data.SqlDbType.VarChar;
                     userCredited.SqlDbType = System.Data.SqlDbType.Int;
                     supervisorComments.SqlDbType = System.Data.SqlDbType.VarChar;
@@ -275,6 +335,7 @@ namespace TimeHub2
                     detail.Size = 200;
                     beginningDate.Size = 200;
                     endingDate.Size = 200;
+                    shift.Size = 200;
                     beginningTime.Size = 200;
                     endingTime.Size = 200;
                     totalTime.Size = 200;
@@ -282,10 +343,24 @@ namespace TimeHub2
                     dateSubmitted.Size = 200;
                     userStar.Size = 200;
                     userRank.Size = 200;
+                    comment.Size = 200;
+                    certifiedBy.Size = 200;
+                    inputBy.Size = 200;
                     approvedBy.Size = 200;
+                    dateApproved.Size = 200;
                     approvedRank.Size = 200;
                     approvedStar.Size = 200;
-                    timeUsed.Size = 200;
+                    caseNumber.Size = 200;
+                    courtSession.Size = 200;
+                    appearanceType.Size = 200;
+                    department.Size = 200;
+                    courtType.Size = 200;
+                    defendant.Size = 200;
+                    charges.Size = 200;
+                    courtNumber.Size = 200;
+                    daApproved.Size = 200;
+                    daApprovedDate.Size = 200;
+                    daApprovedTime.Size = 200;
                     statusId.Size = 200;
                     userCredited.Size = 200;
                     supervisorComments.Size = 200;
@@ -297,6 +372,7 @@ namespace TimeHub2
                     detail.Direction = System.Data.ParameterDirection.Output;
                     beginningDate.Direction = System.Data.ParameterDirection.Output;
                     endingDate.Direction = System.Data.ParameterDirection.Output;
+                    shift.Direction = System.Data.ParameterDirection.Output;
                     beginningTime.Direction = System.Data.ParameterDirection.Output;
                     endingTime.Direction = System.Data.ParameterDirection.Output;
                     totalTime.Direction = System.Data.ParameterDirection.Output;
@@ -304,10 +380,24 @@ namespace TimeHub2
                     dateSubmitted.Direction = System.Data.ParameterDirection.Output;
                     userStar.Direction = System.Data.ParameterDirection.Output;
                     userRank.Direction = System.Data.ParameterDirection.Output;
+                    comment.Direction = System.Data.ParameterDirection.Output;
+                    certifiedBy.Direction = System.Data.ParameterDirection.Output;
+                    inputBy.Direction = System.Data.ParameterDirection.Output;
                     approvedBy.Direction = System.Data.ParameterDirection.Output;
+                    dateApproved.Direction = System.Data.ParameterDirection.Output;
                     approvedRank.Direction = System.Data.ParameterDirection.Output;
                     approvedStar.Direction = System.Data.ParameterDirection.Output;
-                    timeUsed.Direction = System.Data.ParameterDirection.Output;
+                    caseNumber.Direction = System.Data.ParameterDirection.Output;
+                    courtSession.Direction = System.Data.ParameterDirection.Output;
+                    appearanceType.Direction = System.Data.ParameterDirection.Output;
+                    department.Direction = System.Data.ParameterDirection.Output;
+                    courtType.Direction = System.Data.ParameterDirection.Output;
+                    defendant.Direction = System.Data.ParameterDirection.Output;
+                    charges.Direction = System.Data.ParameterDirection.Output;
+                    courtNumber.Direction = System.Data.ParameterDirection.Output;
+                    daApproved.Direction = System.Data.ParameterDirection.Output;
+                    daApprovedDate.Direction = System.Data.ParameterDirection.Output;
+                    daApprovedTime.Direction = System.Data.ParameterDirection.Output;
                     statusId.Direction = System.Data.ParameterDirection.Output;
                     userCredited.Direction = System.Data.ParameterDirection.Output;
                     supervisorComments.Direction = System.Data.ParameterDirection.Output;
@@ -319,6 +409,7 @@ namespace TimeHub2
                     cmd.Parameters.Add(detail);
                     cmd.Parameters.Add(beginningDate);
                     cmd.Parameters.Add(endingDate);
+                    cmd.Parameters.Add(shift);
                     cmd.Parameters.Add(beginningTime);
                     cmd.Parameters.Add(endingTime);
                     cmd.Parameters.Add(totalTime);
@@ -326,10 +417,24 @@ namespace TimeHub2
                     cmd.Parameters.Add(dateSubmitted);
                     cmd.Parameters.Add(userStar);
                     cmd.Parameters.Add(userRank);
+                    cmd.Parameters.Add(comment);
+                    cmd.Parameters.Add(certifiedBy);
+                    cmd.Parameters.Add(inputBy);
                     cmd.Parameters.Add(approvedBy);
+                    cmd.Parameters.Add(dateApproved);
                     cmd.Parameters.Add(approvedRank);
                     cmd.Parameters.Add(approvedStar);
-                    cmd.Parameters.Add(timeUsed);
+                    cmd.Parameters.Add(caseNumber);
+                    cmd.Parameters.Add(courtSession);
+                    cmd.Parameters.Add(appearanceType);
+                    cmd.Parameters.Add(department);
+                    cmd.Parameters.Add(courtType);
+                    cmd.Parameters.Add(defendant);
+                    cmd.Parameters.Add(charges);
+                    cmd.Parameters.Add(courtNumber);
+                    cmd.Parameters.Add(daApproved);
+                    cmd.Parameters.Add(daApprovedDate);
+                    cmd.Parameters.Add(daApprovedTime);
                     cmd.Parameters.Add(statusId);
                     cmd.Parameters.Add(userCredited);
                     cmd.Parameters.Add(supervisorComments);
@@ -344,6 +449,7 @@ namespace TimeHub2
                     string detailOut = detail.Value.ToString();
                     string beginningDateOut = beginningDate.Value.ToString();
                     string endingDateOut = endingDate.Value.ToString();
+                    String shiftOut = shift.Value.ToString();
                     string beginningTimeOut = beginningTime.Value.ToString();
                     string endingTimeOut = endingTime.Value.ToString();
                     string totalTimeOut = totalTime.Value.ToString();
@@ -351,10 +457,24 @@ namespace TimeHub2
                     string dateSubmittedOut = dateSubmitted.Value.ToString();
                     string userStarOut = userStar.Value.ToString();
                     string userRankOut = userRank.Value.ToString();
+                    string commentOut = comment.Value.ToString();
+                    string certifiedByOut = certifiedBy.Value.ToString();
+                    string inputByOut = inputBy.Value.ToString();
                     string approvedByOut = approvedBy.Value.ToString();
+                    string dateApprovedOut = dateApproved.Value.ToString();
                     string approvedRankOut = approvedRank.Value.ToString();
                     string approvedStarOut = approvedStar.Value.ToString();
-                    string timeUsedOut = timeUsed.Value.ToString();
+                    string caseNumberOut = caseNumber.Value.ToString();
+                    string courtSessionOut = courtSession.Value.ToString();
+                    string appearanceTypeOut = appearanceType.Value.ToString();
+                    string departmentOut = department.Value.ToString();
+                    string courtTypeOut = courtType.Value.ToString();
+                    string defendantOut = defendant.Value.ToString();
+                    string chargesOut = charges.Value.ToString();
+                    string courtNumberOut = courtNumber.Value.ToString();
+                    string daApprovedOut = daApproved.Value.ToString();
+                    string daApprovedDateOut = daApprovedDate.Value.ToString();
+                    string daApprovedTimeOut = daApprovedTime.Value.ToString();
                     string statusIdOut = statusId.Value.ToString();
                     string userCreditedOut = userCredited.Value.ToString();
                     string supervisorCommentOut = supervisorComments.Value.ToString();
@@ -366,6 +486,7 @@ namespace TimeHub2
                     tbDetail.Text = detailOut;
                     tbBeginningDate.Text = beginningDateOut;
                     tbEndingDate.Text = endingDateOut;
+                    ddlShift.SelectedValue = shiftOut;
                     tbBeginningTime.Text = beginningTimeOut;
                     tbEndingTime.Text = endingTimeOut;
                     tbTotalTime.Text = totalTimeOut;
@@ -373,10 +494,24 @@ namespace TimeHub2
                     tbSubmittedDate.Text = dateSubmittedOut;
                     tbUserStar.Text = userStarOut;
                     tbUserRank.Text = userRankOut;
+                    tbComments.Text = commentOut;
+                    tbCertifiedBy.Text = certifiedByOut;
+                    tbInputBy.Text = inputByOut;
                     tbApprovedBy.Text = approvedByOut;
+                    tbApprovedDate.Text = dateApprovedOut;
                     tbApprovedRank.Text = approvedRankOut;
                     tbApprovedStar.Text = approvedStarOut;
-                    rblTimeUsed.Text = timeUsedOut;
+                    tbCaseNumber.Text = caseNumberOut;
+                    rblCourtSession.Text = courtSessionOut;
+                    rblAppearanceType.Text = appearanceTypeOut;
+                    tbDepartment.Text = departmentOut;
+                    rblCourtType.Text = courtTypeOut;
+                    tbDefendant.Text = defendantOut;
+                    tbCharges.Text = chargesOut;
+                    tbCourtNumber.Text = courtNumberOut;
+                    tbDaSigned.Text = daApprovedOut;
+                    tbDaSignedDate.Text = daApprovedDateOut;
+                    tbDaSignedTime.Text = daApprovedTimeOut;
                     tbStatusId.Text = statusIdOut;
                     tbUserCredited.Text = userCreditedOut;
                     tbSupervisorComments.Text = supervisorCommentOut;
@@ -385,14 +520,21 @@ namespace TimeHub2
                 }
                 catch (Exception ex)
                 {
-                    PopupTitle = "new page configuration error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    PopupTitle = "existing request population error: ";
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
+            }
+        }
 
+        protected void ConfigureButtons(object sender, EventArgs e)
+        {
                 //display appropriate buttons based on StatusID
                 try
                 {
+                    lblCardNumber.Visible = true;
+                    tbCardNumber.Visible = true;
+
                     switch (tbStatusId.Text.ToLower())
                     {
                         case "saved":
@@ -496,12 +638,11 @@ namespace TimeHub2
                 catch (Exception ex)
                 {
                     PopupTitle = "error displaying buttons: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
 
                 //approve and return buttons should be populated based on a user authority level add in an if/else statement here to test for appropriate level
-            }
         }
 
         protected void CardReadOnly(object sender, EventArgs e)
@@ -513,6 +654,7 @@ namespace TimeHub2
             tbDetail.ReadOnly = true;
             tbBeginningDate.ReadOnly = true;
             tbEndingDate.ReadOnly = true;
+            ddlShift.Enabled = false;
             tbBeginningTime.ReadOnly = true;
             tbEndingTime.ReadOnly = true;
             tbTotalTime.ReadOnly = true;
@@ -523,7 +665,21 @@ namespace TimeHub2
             tbApprovedBy.ReadOnly = true;
             tbApprovedRank.ReadOnly = true;
             tbApprovedStar.ReadOnly = true;
-            rblTimeUsed.Enabled = false;
+            tbApprovedDate.ReadOnly = true;
+            rblCourtSession.Enabled = false;
+            rblAppearanceType.Enabled = false;
+            tbDepartment.ReadOnly = true;
+            rblCourtType.Enabled = false;
+            tbDefendant.ReadOnly = true;
+            tbCharges.ReadOnly = true;
+            tbCourtNumber.ReadOnly = true;
+            tbDaSigned.ReadOnly = true;
+            tbDaSignedDate.ReadOnly = true;
+            tbDaSignedTime.ReadOnly = true;
+            tbCaseNumber.ReadOnly = true;
+            tbCertifiedBy.ReadOnly = true;
+            tbInputBy.ReadOnly = true;
+            tbComments.ReadOnly = true;
         }
 
         protected void CardEditable(object sender, EventArgs e)
@@ -535,6 +691,7 @@ namespace TimeHub2
             tbDetail.ReadOnly = false;
             tbBeginningDate.ReadOnly = false;
             tbEndingDate.ReadOnly = false;
+            ddlShift.Enabled = true;
             tbBeginningTime.ReadOnly = false;
             tbEndingTime.ReadOnly = false;
             tbTotalTime.ReadOnly = false;
@@ -542,7 +699,15 @@ namespace TimeHub2
             tbSubmittedDate.ReadOnly = false;
             tbUserRank.ReadOnly = false;
             tbUserStar.ReadOnly = false;
-            rblTimeUsed.Enabled = true;
+            rblCourtSession.Enabled = true;
+            rblAppearanceType.Enabled = true;
+            tbDepartment.ReadOnly = false;
+            rblCourtType.Enabled = true;
+            tbDefendant.ReadOnly = false;
+            tbCharges.ReadOnly = false;
+            tbCourtNumber.ReadOnly = false;
+            tbCaseNumber.ReadOnly = false;
+            tbComments.ReadOnly = true;
         }
 
         protected void WriteApprovalInfoToCard(object sender, EventArgs e)
@@ -569,6 +734,8 @@ namespace TimeHub2
                         tbApprovedBy.Text = dr_get_approval_info["username"].ToString();
                         tbApprovedStar.Text = dr_get_approval_info["user_star"].ToString();
                         tbApprovedRank.Text = dr_get_approval_info["user_rank"].ToString();
+
+                        tbApprovedDate.Text = DateTime.Today.ToShortDateString();
                     }
 
                     conn.Close();
@@ -576,8 +743,8 @@ namespace TimeHub2
                 catch (Exception ex)
                 {
                     PopupTitle = "Error writing approval info to card: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
@@ -633,7 +800,9 @@ namespace TimeHub2
                 }
                 catch (Exception ex)
                 {
-                    Response.Write("card population error: " + ex.Message);
+                    PopupTitle = "error signing request";
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
 
@@ -673,7 +842,7 @@ namespace TimeHub2
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("spInsertRequestTO", conn);
+                    SqlCommand cmd = new SqlCommand("spInsertRequestCO", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
 
@@ -684,25 +853,41 @@ namespace TimeHub2
                     cmd.Parameters.Add("@Detail", SqlDbType.VarChar).Value = tbDetail.Text;
                     cmd.Parameters.Add("@BeginningDate", SqlDbType.Date).Value = tbBeginningDate.Text;
                     cmd.Parameters.Add("@EndingDate", SqlDbType.Date).Value = tbEndingDate.Text;
-                    cmd.Parameters.Add("@BeginningTime", SqlDbType.Time).Value = tbBeginningTime.Text;
-                    cmd.Parameters.Add("@EndingTime", SqlDbType.Time).Value = tbEndingTime.Text;
-                    cmd.Parameters.Add("@TotalTime", SqlDbType.Int).Value = tbTotalTime.Text;
-                    cmd.Parameters.Add("@SubmittedBy", SqlDbType.VarChar).Value = tbSubmittedBy.Text;
-                    cmd.Parameters.Add("@DateSubmitted", SqlDbType.Date).Value = tbSubmittedDate.Text;
-                    cmd.Parameters.Add("@UserStar", SqlDbType.Int).Value = tbUserStar.Text;
-                    cmd.Parameters.Add("@UserRank", SqlDbType.VarChar).Value = tbUserRank.Text;
+                    cmd.Parameters.Add("@Shift", SqlDbType.Int).Value = ddlShift.SelectedValue;
+                    cmd.Parameters.Add("@BeginningTime", SqlDbType.Time).Value = DateTime.ParseExact(tbBeginningTime.Text, "HHmm", null).TimeOfDay;
+                    cmd.Parameters.Add("@EndingTime", SqlDbType.Time).Value = DateTime.ParseExact(tbEndingTime.Text, "HHmm", null).TimeOfDay;
+                    cmd.Parameters.Add("@TotalTime", SqlDbType.Int).Value = int.Parse(tbTotalTime.Text);
 
-                    cmd.Parameters.Add("@ApprovedBy", SqlDbType.VarChar).Value = tbApprovedBy.Text;
-                    cmd.Parameters.Add("@ApprovedRank", SqlDbType.VarChar).Value = tbApprovedRank.Text;
-                    cmd.Parameters.Add("@ApprovedStar", SqlDbType.VarChar).Value = tbApprovedStar.Text;
-                    cmd.Parameters.Add("@TimeUsed", SqlDbType.VarChar).Value = tbApprovedStar.Text;
+                    //cmd.Parameters.Add("@TotalTime", SqlDbType.Int).Value = tbTotalTime.Text;
+                    //cmd.Parameters.Add("@SubmittedBy", SqlDbType.VarChar).Value = tbSubmittedBy.Text;
+                    //cmd.Parameters.Add("@DateSubmitted", SqlDbType.Date).Value = tbSubmittedDate.Text;
+                    //cmd.Parameters.Add("@UserStar", SqlDbType.Int).Value = tbUserStar.Text;
+                    //cmd.Parameters.Add("@UserRank", SqlDbType.VarChar).Value = tbUserRank.Text;
+                    //cmd.Parameters.Add("@Comment", SqlDbType.VarChar).Value = tbComments.Text;
+                    //cmd.Parameters.Add("@CertifiedBy", SqlDbType.VarChar).Value = tbCertifiedBy.Text;
+                    //cmd.Parameters.Add("@InputBy", SqlDbType.VarChar).Value = tbInputBy.Text;
+                    //cmd.Parameters.Add("@ApprovedBy", SqlDbType.VarChar).Value = tbApprovedBy.Text;
+                    //cmd.Parameters.Add("@DateApproved", SqlDbType.Date).Value = tbApprovedDate.Text;
+                    //cmd.Parameters.Add("@ApprovedRank", SqlDbType.VarChar).Value = tbApprovedRank.Text;
+                    //cmd.Parameters.Add("@ApprovedStar", SqlDbType.Int).Value = tbApprovedStar.Text;
+                    //cmd.Parameters.Add("@CaseNumber", SqlDbType.VarChar).Value = tbCaseNumber.Text;
+                    //cmd.Parameters.Add("@CourtSession", SqlDbType.VarChar).Value = rblCourtSession.SelectedValue;
+                    //cmd.Parameters.Add("@AppearanceType", SqlDbType.VarChar).Value = rblAppearanceType.SelectedValue;
+                    //cmd.Parameters.Add("@Department", SqlDbType.VarChar).Value = tbDepartment.Text;
+                    //cmd.Parameters.Add("@CourtType", SqlDbType.VarChar).Value = rblCourtType.SelectedValue;
+                    //cmd.Parameters.Add("@Defendant", SqlDbType.VarChar).Value = tbDefendant.Text;
+                    //cmd.Parameters.Add("@Charges", SqlDbType.VarChar).Value = tbCharges.Text;
+                    //cmd.Parameters.Add("@CourtNumber", SqlDbType.Int).Value = tbCourtNumber.Text;
+                    //cmd.Parameters.Add("@DAApproved", SqlDbType.VarChar).Value = tbDaSigned.Text;
+                    //cmd.Parameters.Add("@DAApprovedDate", SqlDbType.Date).Value = tbDaSignedDate.Text;
+                    //cmd.Parameters.Add("@DAApprovedTime", SqlDbType.Time).Value = tbDaSignedTime.Text;
 
-                    cmd.Parameters.Add("@RequestType", SqlDbType.VarChar).Value = "TO";
-                    cmd.Parameters.Add("@UserCredited", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
+                    cmd.Parameters.Add("@RequestType", SqlDbType.VarChar).Value = "CO";
+                    cmd.Parameters.Add("@UserCredited", SqlDbType.Int).Value = lblUserLoggedIn.Text;
 
                     cmd.Parameters.Add("@CreateDate", SqlDbType.DateTime2).Value = DateTime.Now.ToString();
                     cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
-                    cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "Saved";
+                    cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "saved";
 
 
 
@@ -722,16 +907,16 @@ namespace TimeHub2
 
                     conn.Close();
 
-                    message = "Request Saved Successfully";
+                    SuccessMessage = "Request Saved Successfully";
                     DisplaySuccessDialog(null, null);
 
-                    ConfigurePageExisting(null, null);
+                    ConfigureButtons(null, null);
                 }
                 catch (Exception ex)
                 {
                     PopupTitle = "Save Error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
@@ -745,7 +930,7 @@ namespace TimeHub2
                 {
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("spInsertRequestTO", conn);
+                        SqlCommand cmd = new SqlCommand("spInsertRequestCO", conn);
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                         cmd.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = tbFirstName.Text;
@@ -762,10 +947,23 @@ namespace TimeHub2
                         cmd.Parameters.Add("@UserRank", SqlDbType.VarChar).Value = tbUserRank.Text;
                         cmd.Parameters.Add("@UserStar", SqlDbType.Int).Value = tbUserStar.Text;
                         cmd.Parameters.Add("@DateSubmitted", SqlDbType.Date).Value = tbSubmittedDate.Text;
-                        cmd.Parameters.Add("@TimeUsed", SqlDbType.VarChar).Value = tbApprovedStar.Text;
+                        cmd.Parameters.Add("@CaseNumber", SqlDbType.VarChar).Value = tbCaseNumber.Text;
+                        cmd.Parameters.Add("@Comment", SqlDbType.VarChar).Value = tbComments.Text;
+                        cmd.Parameters.Add("@Shift", SqlDbType.VarChar).Value = ddlShift.SelectedValue;
 
-                        cmd.Parameters.Add("@RequestType", SqlDbType.VarChar).Value = "TO";
-                        cmd.Parameters.Add("@UserCredited", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
+                        cmd.Parameters.Add("@CourtSession", SqlDbType.VarChar).Value = rblCourtSession.Text;
+                        cmd.Parameters.Add("@AppearanceType", SqlDbType.VarChar).Value = rblAppearanceType.Text;
+                        cmd.Parameters.Add("@Department", SqlDbType.VarChar).Value = tbDepartment.Text;
+                        cmd.Parameters.Add("@CourtType", SqlDbType.VarChar).Value = rblCourtType.Text;
+                        cmd.Parameters.Add("@Defendant", SqlDbType.VarChar).Value = tbDefendant.Text;
+                        cmd.Parameters.Add("@Charges", SqlDbType.VarChar).Value = tbCharges.Text;
+                        cmd.Parameters.Add("@CourtNumber", SqlDbType.Int).Value = tbCourtNumber.Text;
+                        cmd.Parameters.Add("@DaApproved", SqlDbType.VarChar).Value = tbDaSigned.Text;
+                        cmd.Parameters.Add("@DaApprovedDate", SqlDbType.Date).Value = tbDaSignedDate.Text;
+                        cmd.Parameters.Add("@DAApprovedTime", SqlDbType.Time).Value = tbDaSignedTime.Text;
+
+                        cmd.Parameters.Add("@RequestType", SqlDbType.VarChar).Value = "CO";
+                        cmd.Parameters.Add("@UserCredited", SqlDbType.Int).Value = lblUserLoggedIn.Text;
 
                         cmd.Parameters.Add("@CreateDate", SqlDbType.DateTime2).Value = DateTime.Now.ToString();
                         cmd.Parameters.Add("@CreatedBy", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
@@ -787,16 +985,16 @@ namespace TimeHub2
 
                         conn.Close();
 
-                        message = "request submitted successfully";
+                        SuccessMessage = "request submitted successfully";
                         DisplaySuccessDialog(null, null);
 
-                        ConfigurePageExisting(null, null);
+                        ConfigureButtons(null, null);
                     }
                     catch (Exception ex)
                     {
                         PopupTitle = "Submit Error: ";
-                        message = ex.Message;
-                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                        ErrorMessage = ex.Message;
+                        DisplayErrorDialog(null, null);
                     }
                 }
             }
@@ -807,16 +1005,17 @@ namespace TimeHub2
                 {
                     try
                     {
-                        SqlCommand cmd = new SqlCommand("spUpdateRequestTO", conn);
+                        SqlCommand cmd = new SqlCommand("spUpdateRequestCO", conn);
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                         cmd.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = tbFirstName.Text;
                         cmd.Parameters.Add("@LastName", SqlDbType.VarChar).Value = tbLastName.Text;
                         cmd.Parameters.Add("@MiddleInitial", SqlDbType.VarChar).Value = tbMiddleInitial.Text;
-                        cmd.Parameters.Add("@Assignment", SqlDbType.Int).Value = ddlAssignment.SelectedValue;
+                        cmd.Parameters.Add("@Assignment", SqlDbType.VarChar).Value = ddlAssignment.SelectedValue;
                         cmd.Parameters.Add("@Detail", SqlDbType.VarChar).Value = tbDetail.Text;
                         cmd.Parameters.Add("@BeginningDate", SqlDbType.Date).Value = tbBeginningDate.Text;
                         cmd.Parameters.Add("@EndingDate", SqlDbType.Date).Value = tbEndingDate.Text;
+                        cmd.Parameters.Add("@Shift", SqlDbType.VarChar).Value = ddlShift.SelectedValue;
                         cmd.Parameters.Add("@BeginningTime", SqlDbType.Time).Value = tbBeginningTime.Text;
                         cmd.Parameters.Add("@EndingTime", SqlDbType.Time).Value = tbEndingTime.Text;
                         cmd.Parameters.Add("@TotalTime", SqlDbType.Int).Value = tbTotalTime.Text;
@@ -824,7 +1023,18 @@ namespace TimeHub2
                         cmd.Parameters.Add("@UserRank", SqlDbType.VarChar).Value = tbUserRank.Text;
                         cmd.Parameters.Add("@UserStar", SqlDbType.Int).Value = tbUserStar.Text;
                         cmd.Parameters.Add("@DateSubmitted", SqlDbType.Date).Value = tbSubmittedDate.Text;
-                        cmd.Parameters.Add("@TimeUsed", SqlDbType.VarChar).Value = tbApprovedStar.Text;
+                        cmd.Parameters.Add("@CaseNumber", SqlDbType.VarChar).Value = tbCaseNumber.Text;
+                        cmd.Parameters.Add("@Comment", SqlDbType.VarChar).Value = tbComments.Text;
+                        cmd.Parameters.Add("@CourtSession", SqlDbType.VarChar).Value = rblCourtSession.Text;
+                        cmd.Parameters.Add("@AppearanceType", SqlDbType.VarChar).Value = rblAppearanceType.Text;
+                        cmd.Parameters.Add("@Department", SqlDbType.VarChar).Value = tbDepartment.Text;
+                        cmd.Parameters.Add("@CourtType", SqlDbType.VarChar).Value = rblCourtType.Text;
+                        cmd.Parameters.Add("@Defendant", SqlDbType.VarChar).Value = tbDefendant.Text;
+                        cmd.Parameters.Add("@Charges", SqlDbType.VarChar).Value = tbCharges.Text;
+                        cmd.Parameters.Add("@CourtNumber", SqlDbType.Int).Value = tbCourtNumber.Text;
+                        cmd.Parameters.Add("@DaApproved", SqlDbType.VarChar).Value = tbDaSigned.Text;
+                        cmd.Parameters.Add("@DaApprovedDate", SqlDbType.Date).Value = tbDaSignedDate.Text;
+                        cmd.Parameters.Add("@DAApprovedTime", SqlDbType.Time).Value = tbDaSignedTime.Text;
 
                         cmd.Parameters.Add("@CardNUmber", SqlDbType.VarChar).Value = tbCardNumber.Text;
 
@@ -839,16 +1049,16 @@ namespace TimeHub2
 
                         conn.Close();
 
-                        message = "Card Submitted/Edited successfully";
+                        SuccessMessage = "Card Submitted/Edited successfully";
                         DisplaySuccessDialog(null, null);
 
-                        ConfigurePageExisting(null, null);
+                        ConfigureButtons(null, null);
                     }
                     catch (Exception ex)
                     {
                         PopupTitle = "submit/edit Error: ";
-                        message = ex.Message;
-                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                        ErrorMessage = ex.Message;
+                        DisplayErrorDialog(null, null);
                     }
                 }
             }
@@ -864,14 +1074,14 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand();
                     Int32 rowsAffected;
 
-                    cmd.CommandText = "spUpdateRequestStatusTO";
+                    cmd.CommandText = "spUpdateRequestStatusCO";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = conn;
 
                     cmd.Parameters.Add("@CardNumber", SqlDbType.VarChar).Value = tbCardNumber.Text;
                     cmd.Parameters.Add("@ModifiedBy", SqlDbType.VarChar).Value = tbSubmittedBy.Text = lblUserLoggedIn.Text;
-                    cmd.Parameters.Add("@ModifyDate", SqlDbType.VarChar).Value = DateTime.Today.ToShortDateString();
-                    cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "Saved";
+                    cmd.Parameters.Add("@ModifyDate", SqlDbType.Date).Value = DateTime.Today.ToShortDateString();
+                    cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "saved";
 
                     conn.Open();
                     rowsAffected = cmd.ExecuteNonQuery();
@@ -880,9 +1090,9 @@ namespace TimeHub2
 
                     conn.Close();
 
-                    ConfigurePageExisting(null, null);
+                    ConfigureButtons(null, null);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                     //do nothing.  Method throws a ThreadAbortException but still executes properly.
@@ -905,13 +1115,13 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand();
                     Int32 rowsAffected;
 
-                    cmd.CommandText = "spUpdateRequestStatusTO";
+                    cmd.CommandText = "spUpdateRequestStatusCO";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = conn;
 
                     cmd.Parameters.Add("@CardNumber", SqlDbType.VarChar).Value = tbCardNumber.Text;
                     cmd.Parameters.Add("@ModifiedBy", SqlDbType.VarChar).Value = tbSubmittedBy.Text = Session["New"].ToString();
-                    cmd.Parameters.Add("@ModifyDate", SqlDbType.VarChar).Value = DateTime.Today.ToShortDateString();
+                    cmd.Parameters.Add("@ModifyDate", SqlDbType.Date).Value = DateTime.Today.ToShortDateString();
                     cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "Deleted";
 
                     conn.Open();
@@ -930,8 +1140,8 @@ namespace TimeHub2
                 catch (Exception ex)
                 {
                     PopupTitle = "Delete Error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
@@ -953,7 +1163,7 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand();
                     Int32 rowsAffected;
 
-                    cmd.CommandText = "spUpdateRequestApproveTO";
+                    cmd.CommandText = "spUpdateRequestApproveCO";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = conn;
 
@@ -961,7 +1171,7 @@ namespace TimeHub2
                     cmd.Parameters.Add("@ApprovedBy", SqlDbType.VarChar).Value = tbApprovedBy.Text;
                     cmd.Parameters.Add("@ApprovedRank", SqlDbType.VarChar).Value = tbApprovedRank.Text;
                     cmd.Parameters.Add("@ApprovedStar", SqlDbType.VarChar).Value = tbApprovedStar.Text;
-                    cmd.Parameters.Add("@ApprovedDate", SqlDbType.VarChar).Value = DateTime.Now.ToString();
+                    cmd.Parameters.Add("@ApprovedDate", SqlDbType.Date).Value = DateTime.Now.ToShortDateString();
                     cmd.Parameters.Add("@SupervisorComments", SqlDbType.VarChar).Value = tbSupervisorComments.Text;
 
                     cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "approved";
@@ -973,16 +1183,16 @@ namespace TimeHub2
 
                     tbStatusId.Text = "approved";
 
-                    message = "request approved successfully: ";
+                    SuccessMessage = "Card approved successfully";
                     DisplaySuccessDialog(null, null);
 
-                    ConfigurePageExisting(null, null);
+                    ConfigureButtons(null, null);
                 }
                 catch (Exception ex)
                 {
                     PopupTitle = "Approval Error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
@@ -997,7 +1207,7 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand();
                     Int32 rowsAffected;
 
-                    cmd.CommandText = "spReturnRequestTO";
+                    cmd.CommandText = "spReturnRequestCO";
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Connection = conn;
 
@@ -1011,7 +1221,7 @@ namespace TimeHub2
 
                     conn.Close();
 
-                    message = "card returned to user";
+                    SuccessMessage = "card returned to user";
                     DisplaySuccessDialog(null, null);
 
                     Response.Redirect("approvalmgr.aspx");
@@ -1019,8 +1229,8 @@ namespace TimeHub2
                 catch (Exception ex)
                 {
                     PopupTitle = "return error: ";
-                    message = ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = ex.Message;
+                    DisplayErrorDialog(null, null);
                 }
             }
         }
@@ -1028,7 +1238,12 @@ namespace TimeHub2
         protected void DisplaySuccessDialog(object sender, EventArgs e)
         {
             PopupTitle = "Success!";
-            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + SuccessMessage + "');", true);
+        }
+
+        protected void DisplayErrorDialog(object sender, EventArgs e)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
         }
 
         protected void GetAssignments(object sender, EventArgs e)
@@ -1059,12 +1274,48 @@ namespace TimeHub2
                 }
                 catch (Exception ex)
                 {
-                    message = "error populating assignment dropdownlist: " + ex.Message;
-                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    ErrorMessage = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
                 }
             }
             ddlAssignment.Items.Insert(0, new ListItem("--Select--", "0"));
             ddlAssignment.SelectedIndex = 0;
+        }
+
+        protected void GetShifts(object sender, EventArgs e)
+        {
+            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                try
+                {
+                    //retreive UserId from Session table
+
+                    SqlCommand cmd = new SqlCommand("spSelectShifts", conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+
+                    conn.Open();
+
+                    da.Fill(ds);
+
+                    conn.Close();
+
+                    ddlShift.DataSource = ds;
+                    ddlShift.DataTextField = "DisplayName";
+                    ddlShift.DataValueField = "ShiftID";
+                    ddlShift.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    ErrorMessage = "error populating assignment dropdownlist: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + ErrorMessage + "');", true);
+                }
+            }
+            ddlShift.Items.Insert(0, new ListItem("--Select--", "0"));
+            ddlShift.SelectedIndex = 0;
         }
     }
 }

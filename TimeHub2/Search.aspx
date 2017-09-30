@@ -34,6 +34,43 @@
             });
         };
     </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#cblRequestType input').change(function showSubTypes() {
+                var $coSelections = $('#COSubTypes'),
+                    //$epSelections = $('#epSelections'),
+                    $otSelections = $('#OTSubTypes'),
+                    //$toSelections = $('#toSelections'),
+                    $trSelections = $('#TRSubTypes');
+
+                if ($('#cblRequestType_0').is(':checked')) {
+                    $coSelections.show();
+                    $otSelections.show();
+                    $trSelections.show();
+                }
+                else {
+                    if ($('#cblRequestType_1').is(':checked')) {
+                        $coSelections.show();
+                    }
+                    else {
+                        $coSelections.hide();
+                    }
+                    if ($('#cblRequestType_3').is(':checked')) {
+                        $otSelections.show();
+                    }
+                    else {
+                        $otSelections.hide();
+                    }
+                    if ($('#cblRequestType_5').is(':checked')) {
+                        $trSelections.show();
+                    }
+                    else {
+                        $trSelections.hide();
+                    }
+                }
+            })
+        });
+    </script>
 </head>
 <body>
     <form id="search" runat="server">
@@ -87,30 +124,30 @@
                     <div>
                         <label id="lblCardNumber" for="tbCardNumber">Card number</label>
                         <asp:TextBox runat="server" ID="tbCardNumber"></asp:TextBox>
-                        <Label ID="lblUsername" for="tbUsername">Username</Label>
+                        <label id="lblUsername" for="tbUsername">Username</label>
                         <asp:TextBox runat="server" ID="tbUsername"></asp:TextBox>
                         <label id="lblUserStar" for="tbUserStar">User Star</label>
                         <asp:TextBox runat="server" ID="tbUserStar"></asp:TextBox>
-                        <Label ID="lblAssignment" for="ddlAssignment">Assignment</Label>
+                        <label id="lblAssignment" for="ddlAssignment">Assignment</label>
                         <asp:DropDownList runat="server" ID="ddlAssignment" Enabled="true"></asp:DropDownList>
-                        <Label ID="lblRequestType" for="cdlRequestType">Request Type</Label>
+                        <label id="lblRequestType" for="cdlRequestType">Request Type</label>
                         <asp:CheckBoxList runat="server" ID="cblRequestType" RepeatDirection="Horizontal"></asp:CheckBoxList>
-                        <Label ID="lblBeginningDate" for="tbBeginningDate">Date</Label>
+                        <label id="lblBeginningDate" for="tbBeginningDate">Date</label>
                         <asp:TextBox runat="server" ID="tbBeginningDate" type="date"></asp:TextBox>
-                        <Label>Date-range</Label>
-                        <Label id="lblDateRangeBegin" for="tbDateRangeBegin">From</Label>
+                        <label>Date-range</label>
+                        <label id="lblDateRangeBegin" for="tbDateRangeBegin">From</label>
                         <asp:TextBox runat="server" ID="tbDateRangeBegin" type="date"></asp:TextBox>
                         <label id="lblDateRangeEnd" for="tbDateRangeEnd">To</label>
                         <asp:TextBox runat="server" ID="tbDateRangeEnd" type="date"></asp:TextBox>
-                        <Label ID="lblAccountNumber" for="tbAccountNumber">Account Number</Label>
+                        <label id="lblAccountNumber" for="tbAccountNumber">Account Number</label>
                         <asp:TextBox runat="server" ID="tbAccountNumber"></asp:TextBox>
-                        <label ID="lblCaseNumber" for="tbCaseNumber">CaseNumber</label>
-                        <asp:textbox runat="server" ID="tbCaseNumber"></asp:textbox>
-                        <div id="OTSubTypes">
+                        <label id="lblCaseNumber" for="tbCaseNumber">CaseNumber</label>
+                        <asp:TextBox runat="server" ID="tbCaseNumber"></asp:TextBox>
+                        <div id="OTSubTypes" runat="server" style="display: none">
                             <label for="cblOTCode">ot code no.</label>
                             <asp:CheckBoxList runat="server" ID="cblOTCode" RepeatDirection="Horizontal"></asp:CheckBoxList>
                         </div>
-                        <div id="COSubTypes">
+                        <div id="COSubTypes" runat="server" style="display: none">
                             <label for="cblCourtSession">Court Session</label>
                             <asp:CheckBoxList runat="server" ID="cblCourtSession" RepeatDirection="Horizontal"></asp:CheckBoxList>
                             <label for="cblCourtType">Court Type</label>
@@ -118,23 +155,23 @@
                             <label for="cblAppearanceType">Appearance Type</label>
                             <asp:CheckBoxList runat="server" ID="cblAppearanceType" RepeatDirection="Horizontal"></asp:CheckBoxList>
                         </div>
-                        <div id="TRSubTypes ">
+                        <div id="TRSubTypes" runat="server" style="display: none">
                             <label for="cblTrainingCode">Training Code</label>
                             <asp:CheckBoxList runat="server" ID="cblTrainingCode" RepeatDirection="Horizontal"></asp:CheckBoxList>
                         </div>
                         <div>
                             <asp:Button runat="server" ID="btnSearch" Text="search" OnClick="btnSearchClick" />
-                            <asp:Button runat="server" ID="btnClearFields" Text="clear fields"/>
+                            <asp:Button runat="server" ID="btnClearFields" Text="clear fields" />
                         </div>
                         <div class="table-responsive">
                             <asp:GridView runat="server" class="table table-striped table-hover" ID="gvSearchResults" GridLines="None" AutoGenerateColumns="false" ShowHeaderWhenEmpty="true">
                                 <Columns>
                                     <asp:TemplateField HeaderText="Card ID">
-                                    <ItemTemplate>
-                                        <a href="<%#Eval("RequestType") %>Request.aspx?id=<%#Eval("card_number") %>"><%#Eval("RequestType") %><%#Eval("card_number") %></a>
-                                        
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+                                        <ItemTemplate>
+                                            <a href="<%#Eval("RequestType") %>Request.aspx?id=<%#Eval("card_number") %>"><%#Eval("RequestType") %><%#Eval("card_number") %></a>
+
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:BoundField DataField="card_number" HeaderText="Card Number" />
                                     <asp:BoundField DataField="RequestType" HeaderText="Card Type" />
                                     <asp:BoundField DataField="beginning_date" HeaderText="Date" />

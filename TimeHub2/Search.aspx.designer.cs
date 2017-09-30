@@ -130,6 +130,15 @@ namespace TimeHub2.stylesheets {
         protected global::System.Web.UI.WebControls.TextBox tbCaseNumber;
         
         /// <summary>
+        /// OTSubTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl OTSubTypes;
+        
+        /// <summary>
         /// cblOTCode control.
         /// </summary>
         /// <remarks>
@@ -137,6 +146,15 @@ namespace TimeHub2.stylesheets {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblOTCode;
+        
+        /// <summary>
+        /// COSubTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl COSubTypes;
         
         /// <summary>
         /// cblCourtSession control.
@@ -164,6 +182,15 @@ namespace TimeHub2.stylesheets {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblAppearanceType;
+        
+        /// <summary>
+        /// TRSubTypes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TRSubTypes;
         
         /// <summary>
         /// cblTrainingCode control.

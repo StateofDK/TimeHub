@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,6 +40,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -48,6 +58,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -59,24 +77,101 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApprovalMgr.aspx" />
-    <Content Include="CardMgr.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="CORequest.aspx" />
-    <Content Include="EPRequest.aspx" />
-    <Content Include="OTRequest.aspx" />
+    <Content Include="CourtRequest.aspx" />
+    <Content Include="CourtRequestTest.aspx" />
+    <Content Include="Equal-PayRequest.aspx" />
+    <Content Include="Equal-PayRequestTest.aspx" />
+    <Content Include="OvertimeRequest.aspx" />
+    <Content Include="OvertimeRequestTest.aspx" />
     <Content Include="scripts\MiscTools.js" />
+    <Content Include="scripts\scripts.js" />
+    <Content Include="SeachTest.aspx" />
     <Content Include="Search.aspx" />
     <Content Include="stylesheets\search.css" />
-    <Content Include="TORequest.aspx" />
+    <Content Include="SupervisorEntry.aspx" />
+    <Content Include="SupervisorEntryTest.aspx" />
+    <Content Include="SupervisorHome.aspx" />
+    <Content Include="Time-OffRequest.aspx" />
     <Content Include="stylesheets\OTRequest.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="TrainingRequestTest.aspx" />
+    <Content Include="Vendors\autosize.min.js" />
+    <Content Include="Vendors\bootstrap-progressbar-3.3.4.min.css" />
+    <Content Include="Vendors\bootstrap-progressbar.min.js" />
+    <Content Include="Vendors\bootstrap-wysiwyg.min.js" />
+    <Content Include="Vendors\bootstrap.min.css" />
+    <Content Include="Vendors\bootstrap.min.js" />
+    <Content Include="Vendors\buttons.bootstrap.min.css" />
+    <Content Include="Vendors\buttons.bootstrap.min.js" />
+    <Content Include="Vendors\buttons.flash.min.js" />
+    <Content Include="Vendors\buttons.html5.min.js" />
+    <Content Include="Vendors\buttons.print.min.js" />
+    <Content Include="Vendors\Chart.min.js" />
+    <Content Include="Vendors\curvedLines.js" />
+    <Content Include="Vendors\custom.css" />
+    <Content Include="Vendors\custom.js" />
+    <Content Include="Vendors\dataTables.bootstrap.min.css" />
+    <Content Include="Vendors\dataTables.bootstrap.min.js" />
+    <Content Include="Vendors\dataTables.buttons.min.js" />
+    <Content Include="Vendors\dataTables.fixedHeader.min.js" />
+    <Content Include="Vendors\dataTables.keyTable.min.js" />
+    <Content Include="Vendors\dataTables.responsive.min.js" />
+    <Content Include="Vendors\dataTables.scroller.min.js" />
+    <Content Include="Vendors\date.js" />
+    <Content Include="Vendors\daterangepicker.js" />
+    <Content Include="Vendors\fastclick.js" />
+    <Content Include="Vendors\fixedHeader.bootstrap.min.css" />
+    <Content Include="Vendors\gauge.min.js" />
+    <Content Include="Vendors\gdp-data.js" />
+    <Content Include="Vendors\green.css" />
+    <Content Include="Vendors\icheck.min.js" />
+    <Content Include="Vendors\jquery-jvectormap-2.0.3.css" />
+    <Content Include="Vendors\jquery-jvectormap-2.0.3.min.js" />
+    <Content Include="Vendors\jquery-jvectormap-us-aea-en.js" />
+    <Content Include="Vendors\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="Vendors\jquery.autocomplete.min.js" />
+    <Content Include="Vendors\jquery.dataTables.min.js" />
+    <Content Include="Vendors\jquery.flot.js" />
+    <Content Include="Vendors\jquery.flot.orderBars.js" />
+    <Content Include="Vendors\jquery.flot.pie.js" />
+    <Content Include="Vendors\jquery.flot.resize.js" />
+    <Content Include="Vendors\jquery.flot.spline.js" />
+    <Content Include="Vendors\jquery.flot.stack.js" />
+    <Content Include="Vendors\jquery.flot.time.js" />
+    <Content Include="Vendors\jquery.hotkeys.js" />
+    <Content Include="Vendors\jquery.min.js" />
+    <Content Include="Vendors\jquery.tagsinput.js" />
+    <Content Include="Vendors\jszip.min.js" />
+    <Content Include="Vendors\moment.min.js" />
+    <Content Include="Vendors\morris.min.js" />
+    <Content Include="Vendors\nprogress.js" />
+    <Content Include="Vendors\parsley.min.js" />
+    <Content Include="Vendors\pdfmake.min.js" />
+    <Content Include="Vendors\prettify.js" />
+    <Content Include="Vendors\prettify.min.css" />
+    <Content Include="Vendors\raphael.min.js" />
+    <Content Include="Vendors\responsive.bootstrap.js" />
+    <Content Include="Vendors\responsive.bootstrap.min.css" />
+    <Content Include="Vendors\scroller.bootstrap.min.css" />
+    <Content Include="Vendors\select2.full.min.js" />
+    <Content Include="Vendors\select2.min.css" />
+    <Content Include="Vendors\skycons.js" />
+    <Content Include="Vendors\starrr.css" />
+    <Content Include="Vendors\starrr.js" />
+    <Content Include="Vendors\switchery.min.css" />
+    <Content Include="Vendors\switchery.min.js" />
+    <Content Include="Vendors\vfs_fonts.js" />
+    <Content Include="UserHome.aspx" />
+    <Content Include="UserProfile.aspx" />
+    <Content Include="CardManager.aspx" />
     <None Include="Properties\PublishProfiles\timehub.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -88,6 +183,8 @@
     <Content Include="scripts\jquery-1.9.0.js" />
     <Content Include="scripts\jquery-1.9.0.min.js" />
     <Content Include="scripts\jquery-1.9.0.min.map" />
+    <Content Include="TimeHub.Master" />
+    <Content Include="scripts\Session.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -108,13 +205,13 @@
     <Content Include="stylesheets\register.css" />
     <Content Include="stylesheets\styles.css" />
     <Content Include="stylesheets\userhome.css" />
-    <Content Include="TRRequest.aspx" />
-    <Content Include="UserProfile.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="TrainingRequest.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Login.aspx" />
     <Content Include="RegisterUser.aspx" />
     <Content Include="PasswordRecovery.aspx" />
-    <Content Include="UserHome.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApprovalMgr.aspx.cs">
@@ -124,42 +221,72 @@
     <Compile Include="ApprovalMgr.aspx.designer.cs">
       <DependentUpon>ApprovalMgr.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CardMgr.aspx.cs">
-      <DependentUpon>CardMgr.aspx</DependentUpon>
+    <Compile Include="CourtRequest.aspx.cs">
+      <DependentUpon>CourtRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CardMgr.aspx.designer.cs">
-      <DependentUpon>CardMgr.aspx</DependentUpon>
+    <Compile Include="CourtRequest.aspx.designer.cs">
+      <DependentUpon>CourtRequest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="CORequest.aspx.cs">
-      <DependentUpon>CORequest.aspx</DependentUpon>
+    <Compile Include="CourtRequestTest.aspx.cs">
+      <DependentUpon>CourtRequestTest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="CORequest.aspx.designer.cs">
-      <DependentUpon>CORequest.aspx</DependentUpon>
+    <Compile Include="CourtRequestTest.aspx.designer.cs">
+      <DependentUpon>CourtRequestTest.aspx</DependentUpon>
     </Compile>
-    <Compile Include="EPRequest.aspx.cs">
-      <DependentUpon>EPRequest.aspx</DependentUpon>
+    <Compile Include="DataLayer.cs" />
+    <Compile Include="EmployeeController.cs" />
+    <Compile Include="Equal-PayRequest.aspx.cs">
+      <DependentUpon>Equal-PayRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="EPRequest.aspx.designer.cs">
-      <DependentUpon>EPRequest.aspx</DependentUpon>
+    <Compile Include="Equal-PayRequest.aspx.designer.cs">
+      <DependentUpon>Equal-PayRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equal-PayRequestTest.aspx.cs">
+      <DependentUpon>Equal-PayRequestTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equal-PayRequestTest.aspx.designer.cs">
+      <DependentUpon>Equal-PayRequestTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="OTRequest.aspx.cs">
-      <DependentUpon>OTRequest.aspx</DependentUpon>
+    <Compile Include="LogicLayer.cs" />
+    <Compile Include="Models\Requests.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="OvertimeRequest.aspx.cs">
+      <DependentUpon>OvertimeRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OTRequest.aspx.designer.cs">
-      <DependentUpon>OTRequest.aspx</DependentUpon>
+    <Compile Include="OvertimeRequest.aspx.designer.cs">
+      <DependentUpon>OvertimeRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OvertimeRequestTest.aspx.cs">
+      <DependentUpon>OvertimeRequestTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OvertimeRequestTest.aspx.designer.cs">
+      <DependentUpon>OvertimeRequestTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteDataController.cs" />
+    <Compile Include="scripts\Session.ashx.cs">
+      <DependentUpon>Session.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SeachTest.aspx.cs">
+      <DependentUpon>SeachTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SeachTest.aspx.designer.cs">
+      <DependentUpon>SeachTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Search.aspx.cs">
       <DependentUpon>Search.aspx</DependentUpon>
@@ -168,12 +295,40 @@
     <Compile Include="Search.aspx.designer.cs">
       <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TORequest.aspx.cs">
-      <DependentUpon>TORequest.aspx</DependentUpon>
+    <Compile Include="SupervisorEntry.aspx.cs">
+      <DependentUpon>SupervisorEntry.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TORequest.aspx.designer.cs">
-      <DependentUpon>TORequest.aspx</DependentUpon>
+    <Compile Include="SupervisorEntry.aspx.designer.cs">
+      <DependentUpon>SupervisorEntry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorEntryTest.aspx.cs">
+      <DependentUpon>SupervisorEntryTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SupervisorEntryTest.aspx.designer.cs">
+      <DependentUpon>SupervisorEntryTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SupervisorHome.aspx.cs">
+      <DependentUpon>SupervisorHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SupervisorHome.aspx.designer.cs">
+      <DependentUpon>SupervisorHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TimeHub.Master.cs">
+      <DependentUpon>TimeHub.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeHub.Master.designer.cs">
+      <DependentUpon>TimeHub.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Time-OffRequest.aspx.cs">
+      <DependentUpon>Time-OffRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Time-OffRequest.aspx.designer.cs">
+      <DependentUpon>Time-OffRequest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Login.aspx.cs">
@@ -197,12 +352,19 @@
     <Compile Include="PasswordRecovery.aspx.designer.cs">
       <DependentUpon>PasswordRecovery.aspx</DependentUpon>
     </Compile>
-    <Compile Include="TRRequest.aspx.cs">
-      <DependentUpon>TRRequest.aspx</DependentUpon>
+    <Compile Include="TrainingRequest.aspx.cs">
+      <DependentUpon>TrainingRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="TRRequest.aspx.designer.cs">
-      <DependentUpon>TRRequest.aspx</DependentUpon>
+    <Compile Include="TrainingRequest.aspx.designer.cs">
+      <DependentUpon>TrainingRequest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TrainingRequestTest.aspx.cs">
+      <DependentUpon>TrainingRequestTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TrainingRequestTest.aspx.designer.cs">
+      <DependentUpon>TrainingRequestTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="UserHome.aspx.cs">
       <DependentUpon>UserHome.aspx</DependentUpon>
@@ -218,10 +380,16 @@
     <Compile Include="UserProfile.aspx.designer.cs">
       <DependentUpon>UserProfile.aspx</DependentUpon>
     </Compile>
+    <Compile Include="CardManager.aspx.cs">
+      <DependentUpon>CardManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CardManager.aspx.designer.cs">
+      <DependentUpon>CardManager.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

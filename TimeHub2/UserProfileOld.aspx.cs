@@ -4,15 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Configuration;
-using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Configuration;
 
 namespace TimeHub2
 {
-    public partial class UserProfile : System.Web.UI.Page
+    public partial class UserProfileTest : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -43,11 +41,12 @@ namespace TimeHub2
 
                         string UserIdOut = UserId.Value.ToString();
 
-                        userloggedin.Text = UserIdOut;
+                        lblUserLoggedIn.Text = UserIdOut;
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("error retreiving session username: " + ex.Message);
+                        message = "error retreiving session username: " + ex.Message;
+                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                     }
                 }
             }
@@ -59,6 +58,18 @@ namespace TimeHub2
             {
                 PopulateFields(null, null);
             }
+        }
+
+        public string PopupTitle
+        {
+            get;
+            set;
+        }
+
+        public string message
+        {
+            get;
+            set;
         }
 
         protected void LogOutClick(object sender, EventArgs e)
@@ -78,7 +89,7 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand("spPopulateProfile", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = userloggedin.Text;
+                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
 
                     SqlParameter UserName = new SqlParameter();
                     SqlParameter FirstName = new SqlParameter();
@@ -181,7 +192,8 @@ namespace TimeHub2
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("card population error: " + ex.Message);
+                    message = "profile population error: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
             }
         }
@@ -196,7 +208,7 @@ namespace TimeHub2
                     SqlCommand cmd = new SqlCommand("spUpdateProfile", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = userloggedin.Text;
+                    cmd.Parameters.Add("@UserId", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
 
                     cmd.Parameters.Add("@FirstName", SqlDbType.VarChar).Value = first_name.Text;
                     cmd.Parameters.Add("@LastName", SqlDbType.VarChar).Value = last_name.Text;
@@ -211,17 +223,19 @@ namespace TimeHub2
                     cmd.Parameters.Add("@Shift", SqlDbType.VarChar).Value = ddl_shift.Text;
 
                     cmd.Parameters.Add("@ModifyDate", SqlDbType.VarChar).Value = DateTime.Now.ToString();
-                    cmd.Parameters.Add("@ModifiedBy", SqlDbType.VarChar).Value = userloggedin.Text;
+                    cmd.Parameters.Add("@ModifiedBy", SqlDbType.VarChar).Value = lblUserLoggedIn.Text;
                     cmd.Parameters.Add("@StatusId", SqlDbType.VarChar).Value = "active";
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Profile updated successfully!");
+                    message = "profile updated successfully: ";
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Profile update error:  " + ex.Message);
+                    message = "profile updated error: " + ex.Message;
+                    ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
             }
         }

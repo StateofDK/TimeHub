@@ -64,6 +64,10 @@ namespace TimeHub2.stylesheets
                 GetCourtTypes(null, null);
                 GetTrainingTypes(null, null);
             }
+            else
+            {
+                ShowSubTypes(null, null);
+            }
         }
 
         public string PopupTitle
@@ -76,6 +80,71 @@ namespace TimeHub2.stylesheets
         {
             get;
             set;
+        }
+
+        protected void ShowSubTypes(object sender, EventArgs e)
+        {
+            string strSelectedItem = null;
+
+            foreach (ListItem box in cblRequestType.Items)
+            {
+                if (box.Selected)
+                {
+                    strSelectedItem = box.ToString();
+
+                    switch (strSelectedItem.ToLower())
+                    {
+                        case "all request types":
+                            COSubTypes.Attributes["style"] = "";
+                            OTSubTypes.Attributes["style"] = "";
+                            TRSubTypes.Attributes["style"] = "";
+                            break;
+                        case "co":
+                            COSubTypes.Attributes["style"] = "";
+                            break;
+
+                        //case "ep":
+                        //    epSelections.Attributes["style"] = "";
+                        //    break;
+
+                        case "ot":
+                            OTSubTypes.Attributes["style"] = "";
+                            break;
+
+                        //case "to":
+                        //    toSelections.Attributes["style"] = "";
+                        //    break;
+
+                        case "tr":
+                            TRSubTypes.Attributes["style"] = "";
+                            break;
+                    }
+            }
+
+
+
+            //switch (rblRequestType.SelectedValue)
+            //{
+            //    case "co":
+            //        coSelections.Attributes["style"] = "";
+            //        break;
+
+            //    case "ep":
+            //        epSelections.Attributes["style"] = "";
+            //        break;
+
+            //    case "ot":
+            //        otSelections.Attributes["style"] = "";
+            //        break;
+
+            //    case "to":
+            //        toSelections.Attributes["style"] = "";
+            //        break;
+
+            //    case "tr":
+            //        trSelections.Attributes["style"] = "";
+            //        break;
+            }
         }
 
         protected void btnLogOutClick(object sender, EventArgs e)
@@ -552,7 +621,6 @@ namespace TimeHub2.stylesheets
                     ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
             }
-            //cblTrainingCode.Items.Insert(0, new ListItem("--Select--", "0"));
         }
     }
 }

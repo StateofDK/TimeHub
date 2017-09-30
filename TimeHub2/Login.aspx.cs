@@ -10,66 +10,26 @@ using System.Configuration;
 
 namespace TimeHub2
 {
-    public partial class WebForm6 : System.Web.UI.Page
+    public partial class Login : System.Web.UI.Page
     {
+        TimeHub2.Models.User u = new TimeHub2.Models.User();
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-        }
-
-        public string PopupTitle
-        {
-            get;
-            set;
-        }
-
-        public string message
-        {
-            get;
-            set;
+            Session["id"] = null;
         }
 
         protected void Login_Click(object sender, EventArgs e)
         {
-            string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connstring))
+            u = TimeHub2.LogicLayer.UserLogic.GetUser(null, tbUsername.Text);
+
+            string passwordOut = u.Password;
+
+            if (passwordOut == tbPassword.Text)
             {
-                try
-                {
-                    SqlCommand cmd = new SqlCommand("spSelectPassword", conn);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                CreateSession(null, null);
 
-                    cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = tb_username.Text;
-
-                    SqlParameter password = new SqlParameter();
-                    password.ParameterName = "@password";
-                    password.SqlDbType = System.Data.SqlDbType.VarChar;
-                    password.Size = 200;
-                    password.Direction = System.Data.ParameterDirection.Output;
-                    cmd.Parameters.Add(password);
-                    
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-
-                    string passwordOut = password.Value.ToString();
-
-                    if (passwordOut == tb_password.Text)
-                    {
-
-                        CreateSession(null, null);
-                        
-                        Response.Redirect("~/UserHome.aspx");
-                    }
-                    else
-                    {
-                        message = "that username/password combination does not exist";
-                        ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
-                    }
-                }
-                catch(Exception ex)
-                {
-                    //catch placed to swallow "thread was being aborted" exception.  C# was throwing exception even as the login and redirect occurred properly.
-                }
+                Response.Redirect("~/UserHome.aspx");
             }
         }
 
@@ -80,37 +40,48 @@ namespace TimeHub2
             var random = new Random();
             var SessionId = new string(Enumerable.Repeat(AvailableCharacters, 20).Select(s => s[random.Next(s.Length)]).ToArray());
 
-            String UserIdOut = null;
+            Session["id"] = SessionId.ToString();
 
-            Session["New"] = SessionId.ToString();
+            Session["UserId"] = u.UserId;
+            Session["UserName"] = u.UserName;
+            Session["Password"] = u.Password;
+            Session["FirstName"] = u.FirstName;
+            Session["MiddleInitial"] = u.MiddleInitial;
+            Session["LastName"] = u.LastName;
+            Session["UserStar"] = u.UserStar;
+            Session["UserRank"] = u.UserRank;
+            Session["UserRankId"] = u.UserRankId;
+            Session["Assignment"] = u.Assignment;
+            Session["AssignmentId"] = u.AssignmentId;
+            Session["Shift"] = u.Shift;
+            Session["ShiftId"] = u.ShiftId;
+            Session["ContactPhone"] = u.ContactPhone;
+            Session["PhoneType"] = u.PhoneType;
+            Session["Email"] = u.Email;
+
 
             string connstring = ConfigurationManager.ConnectionStrings["TimeHubDBCS"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connstring))
             {
-                //retreive user id
+                //insert session id
                 try
                 {
                     SqlCommand cmd = new SqlCommand("spInsertSessionId", conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = tb_username.Text;
+                    cmd.Parameters.Add("@username", SqlDbType.VarChar).Value = tbUsername.Text;
                     cmd.Parameters.Add("@createdate", SqlDbType.DateTime2).Value = DateTime.Now;
                     cmd.Parameters.Add("@SessionId", SqlDbType.VarChar).Value = SessionId.ToString();
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    message = "error inserting session: " + ex.Message;
-                    ClientScript.RegisterStartupScript(GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                    //message = "error inserting session: " + ex.Message;
+                    //ClientScript.RegisterStartupScript(GetType(), "Popup", "ShowPopup('" + message + "');", true);
                 }
             }
-        }
-
-        protected void RegisterClick(object sender, EventArgs e)
-        {
-            Response.Redirect("RegisterUser.aspx");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CardMgr.aspx.cs" Inherits="TimeHub2.CardMgrTest" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CardMgrOld.aspx.cs" Inherits="TimeHub2.CardMgrTest" %>
 
 <!DOCTYPE html>
 <html lang="en">
